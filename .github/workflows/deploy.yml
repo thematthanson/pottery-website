@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # Trigger on pushes to the main branch
+      - main
 
 permissions:
   contents: write
@@ -26,14 +26,20 @@ jobs:
       - name: Set Up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # Use Node.js version 18
+          node-version: 18
           cache: npm
 
-      # Step 3: Install dependencies
-      - name: Install Dependencies
-        run: npm ci
+      # Step 3: Clean Node Modules and Lock File
+      - name: Clean Node Modules and Lock File
+        run: |
+          rm -rf node_modules
+          rm -f package-lock.json
 
-      # Step 4: Build the project
+      # Step 4: Install dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Step 5: Build the project
       - name: Build Project
         run: npm run build
         env:
@@ -44,21 +50,21 @@ jobs:
           VITE_EMAILJS_ADMIN_TEMPLATE_ID: ${{ secrets.VITE_EMAILJS_ADMIN_TEMPLATE_ID }}
           VITE_EMAILJS_CUSTOMER_TEMPLATE_ID: ${{ secrets.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID }}
 
-      # Step 5: Disable Jekyll
+      # Step 6: Disable Jekyll
       - name: Disable Jekyll
         run: touch dist/.nojekyll
 
-      # Step 6: Configure GitHub Pages
+      # Step 7: Configure GitHub Pages
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v3
 
-      # Step 7: Upload build output
+      # Step 8: Upload build output
       - name: Upload Build Output
-        uses: actions/upload-pages-artifact@v1 # Use v1 instead of v4
+        uses: actions/upload-pages-artifact@v1
         with:
           path: dist
 
-      # Step 8: Deploy to GitHub Pages
+      # Step 9: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
