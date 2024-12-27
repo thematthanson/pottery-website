@@ -7,7 +7,7 @@
     
     <!-- Stylesheet -->
     <link href="./css/styles.css" rel="stylesheet">
-    <link rel="icon" href="${import.meta.env.BASE_URL}assets/images/favicon.ico">
+    <link rel="icon" href="./assets/images/favicon.ico">
     
     <!-- EmailJS -->
     <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
@@ -20,16 +20,15 @@
 </head>
 <body class="min-h-screen bg-gray-100">
     <!-- Modal Dialog -->
-    <dialog id="pottery-modal" class="modal sm:modal-middle">
+    <dialog id="pottery-modal" class="modal modal-center sm:modal-middle">
         <div class="modal-box w-11/12 max-w-lg bg-white">
-            <h3 class="font-bold text-lg mb-4 text-center">Order Pottery</h3>
+            <h3 class="font-bold text-lg mb-4">Order Pottery</h3>
 
             <!-- Modal Images -->
-            <div id="modal-images" class="flex justify-between mb-4 gap-2">
-                <!-- Images will be dynamically rendered here -->
+            <div id="modal-images" class="flex justify-center gap-4 mb-4">
+                <!-- Placeholder for dynamically inserted images -->
             </div>
 
-            <!-- Order Form -->
             <form id="order-form" class="space-y-4">
                 <input type="hidden" name="pottery_id" id="pottery_id">
                 
@@ -38,12 +37,11 @@
                     <label class="label">
                         <span class="label-text">Name</span>
                     </label>
-                    <input 
-                        type="text" 
-                        id="name" 
-                        name="user_name" 
-                        required 
-                        class="input input-bordered w-full">
+                    <input type="text" 
+                           id="name" 
+                           name="user_name" 
+                           required 
+                           class="input input-bordered w-full">
                 </div>
                 
                 <!-- Email Field -->
@@ -51,12 +49,11 @@
                     <label class="label">
                         <span class="label-text">Email</span>
                     </label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="user_email" 
-                        required 
-                        class="input input-bordered w-full">
+                    <input type="email" 
+                           id="email" 
+                           name="user_email" 
+                           required 
+                           class="input input-bordered w-full">
                 </div>
                 
                 <!-- Address Field -->
@@ -64,23 +61,20 @@
                     <label class="label">
                         <span class="label-text">Address</span>
                     </label>
-                    <input 
-                        type="text" 
-                        id="address" 
-                        name="user_address" 
-                        required 
-                        class="input input-bordered w-full">
+                    <input type="text" 
+                           id="address" 
+                           name="user_address" 
+                           required 
+                           class="input input-bordered w-full">
                 </div>
                 
                 <!-- Form Actions -->
                 <div class="modal-action">
-                    <button 
-                        type="button" 
-                        class="btn" 
-                        onclick="closeModal()">Cancel</button>
-                    <button 
-                        type="submit" 
-                        class="btn btn-primary">Submit Order</button>
+                    <button type="button" 
+                            class="btn" 
+                            onclick="closeModal()">Cancel</button>
+                    <button type="submit" 
+                            class="btn btn-primary">Submit Order</button>
                 </div>
             </form>
         </div>
@@ -90,11 +84,15 @@
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold text-center mb-8">Pottery Collection</h1>
         <div id="pottery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Pottery cards will be dynamically rendered here -->
+            <!-- Items will be dynamically rendered here -->
         </div>
     </div>
 
     <!-- Scripts -->
     <script type="module" src="./js/app.js"></script>
+    <script>
+        // Ensure global access to openModal function
+        window.openModal = openModal;
+    </script>
 </body>
 </html>
