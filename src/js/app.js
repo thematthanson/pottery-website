@@ -1,10 +1,8 @@
-// At the top of app.js
 let potteryData = [];
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // Fetch API key and Spreadsheet ID from environment variables
         const apiKey = import.meta.env.VITE_GOOGLE_SHEETS_API_KEY;
         const spreadsheetId = import.meta.env.VITE_GOOGLE_SHEETS_ID;
 
@@ -12,12 +10,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             throw new Error('Google Sheets API Key or Spreadsheet ID is not defined.');
         }
 
-        // Define range and fetch data
         const range = 'Pots!H2:Q';
         potteryData = await fetchPotteryData(apiKey, spreadsheetId, range);
-        console.log('Initial pottery data:', potteryData);
+        console.log('Fetched pottery data:', potteryData);
 
-        // Render fetched data
         renderPotteryItems(potteryData);
     } catch (error) {
         console.error('Error initializing data:', error);
@@ -66,7 +62,7 @@ function renderPotteryItems(potteryData) {
                 <img 
                     src="${imageUrl}" 
                     alt="Pottery ${id}" 
-                    class="w-full h-48 object-cover ${isTaken ? 'grayscale' : ''}"
+                    class="w-full h-48 object-cover ${isTaken ? 'grayscale' : ''}" 
                     ${isTaken ? '' : `onmouseover="this.src='${gifUrl}'" onmouseout="this.src='${imageUrl}'"`}
                     onerror="this.onerror=null; this.src='${import.meta.env.BASE_URL}assets/images/fallback-image.jpg';">
             </figure>
@@ -87,31 +83,27 @@ function renderPotteryItems(potteryData) {
 }
 
 // Open modal to select a pottery item
-function openModal(potteryId) {
+window.openModal = function (potteryId) {
     console.log('Opening modal for pottery:', potteryId);
 
     const modal = document.getElementById('pottery-modal');
     const form = modal.querySelector('form');
     const potteryIdInput = form.querySelector('input[name="pottery_id"]');
-    const submitButton = form.querySelector('button[type="submit"]');
+    const imageContainer = document.getElementById('modal-images');
 
-    if (!modal || !form || !potteryIdInput) {
-        console.error('Modal, form, or pottery ID input not found');
+    if (!modal || !form || !potteryIdInput || !imageContainer) {
+        console.error('Modal or required elements not found');
         return;
     }
 
-    // Reset and populate the form
     form.reset();
     potteryIdInput.value = potteryId;
 
-    // Add pottery details and images
     const pottery = potteryData.find(item => item[0] === potteryId);
     if (pottery) {
         const [id, imageUrl, length, width, height, description, status, gifUrl, topImageUrl] = pottery;
-        const size = `${length} x ${width} x ${height}`;
 
         // Populate images in the modal
-        const imageContainer = document.getElementById('modal-images');
         imageContainer.innerHTML = `
             <img src="${imageUrl}" alt="Pottery Image 1" class="w-1/2 h-48 object-cover">
             <img src="${topImageUrl}" alt="Pottery Image 2" class="w-1/2 h-48 object-cover">
@@ -123,22 +115,20 @@ function openModal(potteryId) {
 
         form.insertAdjacentHTML('beforeend', `
             <input type="hidden" name="pottery_details" value="${description || 'No description available'}">
-            <input type="hidden" name="pottery_size" value="${size}">
+            <input type="hidden" name="pottery_size" value="${length} x ${width} x ${height}">
         `);
     }
 
-    submitButton.disabled = false;
-    submitButton.textContent = 'Submit Order';
     modal.showModal();
-}
+};
 
 // Close the modal
-function closeModal() {
+window.closeModal = function () {
     const modal = document.getElementById('pottery-modal');
     if (modal) {
         modal.close();
     }
-}
+};
 
 // Update the Google Sheet to mark pottery as taken
 async function updateGoogleSheet(potteryId) {
@@ -219,3 +209,6 @@ async function markPotAsTaken(potteryId) {
         console.error('Pottery item not found');
     }
 }
+
+// Make openModal globally accessible
+window.openModal = openModal;
