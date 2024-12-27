@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # Trigger workflow on push to the main branch
+      - main # Trigger on pushes to the main branch
 
 permissions:
   contents: write
@@ -26,22 +26,17 @@ jobs:
       - name: Set Up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # Specify Node.js version
-          cache: npm # Enable caching for dependencies
+          node-version: 18 # Use Node.js version 18
+          cache: npm
 
-      # Step 3: # Install dependencies
+      # Step 3: Install dependencies
       - name: Install Dependencies
-        run: npm install  
+        run: npm ci
 
-      # Step 4: Build CSS (if applicable)
-      - name: Build CSS
-        run: npm run build:css
-
-      # Step 5: Build the project
+      # Step 4: Build the project
       - name: Build Project
         run: npm run build
         env:
-          # Pass secrets as environment variables
           VITE_GOOGLE_SHEETS_API_KEY: ${{ secrets.VITE_GOOGLE_SHEETS_API_KEY }}
           VITE_GOOGLE_SHEETS_ID: ${{ secrets.VITE_GOOGLE_SHEETS_ID }}
           VITE_EMAILJS_PUBLIC_KEY: ${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}
@@ -49,21 +44,21 @@ jobs:
           VITE_EMAILJS_ADMIN_TEMPLATE_ID: ${{ secrets.VITE_EMAILJS_ADMIN_TEMPLATE_ID }}
           VITE_EMAILJS_CUSTOMER_TEMPLATE_ID: ${{ secrets.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID }}
 
-      # Step 6: Add .nojekyll file to bypass Jekyll processing
+      # Step 5: Disable Jekyll
       - name: Disable Jekyll
         run: touch dist/.nojekyll
 
-      # Step 7: Configure GitHub Pages
+      # Step 6: Configure GitHub Pages
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v3
 
-      # Step 8: Upload build artifacts with v4
-      - name: Upload Build Artifacts
-        uses: actions/upload-pages-artifact@v4
+      # Step 7: Upload build output
+      - name: Upload Build Output
+        uses: actions/upload-pages-artifact@v1 # Use v1 instead of v4
         with:
-          path: dist # Path to the output directory
+          path: dist
 
-      # Step 9: Deploy to GitHub Pages
+      # Step 8: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
