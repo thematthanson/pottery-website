@@ -57,9 +57,9 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v3
 
-      # Step 8: Upload build output to GitHub Pages
+      # Step 8: Upload build artifacts with v4
       - name: Upload Build Artifacts
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v4
         with:
           path: dist # Path to the output directory
 
