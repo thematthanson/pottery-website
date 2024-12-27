@@ -29,9 +29,9 @@ jobs:
           node-version: 18 # Specify Node.js version
           cache: npm # Enable caching for dependencies
 
-      # Step 3: Install dependencies
+      # Step 3: # Install dependencies
       - name: Install Dependencies
-        run: npm ci
+        run: npm install  
 
       # Step 4: Build CSS (if applicable)
       - name: Build CSS
