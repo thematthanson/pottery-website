@@ -19,6 +19,14 @@ jobs:
         run: |
           npm ci
           npm run build
+        env:
+          VITE_GOOGLE_SHEETS_API_KEY: ${{ secrets.VITE_GOOGLE_SHEETS_API_KEY }}
+          VITE_GOOGLE_SHEETS_ID: ${{ secrets.VITE_GOOGLE_SHEETS_ID }}
+          VITE_GOOGLE_APPS_SCRIPT_URL: ${{ secrets.VITE_GOOGLE_APPS_SCRIPT_URL }}
+          VITE_EMAILJS_PUBLIC_KEY: ${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}
+          VITE_EMAILJS_SERVICE_ID: ${{ secrets.VITE_EMAILJS_SERVICE_ID }}
+          VITE_EMAILJS_ADMIN_TEMPLATE_ID: ${{ secrets.VITE_EMAILJS_ADMIN_TEMPLATE_ID }}
+          VITE_EMAILJS_CUSTOMER_TEMPLATE_ID: ${{ secrets.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID }}
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
