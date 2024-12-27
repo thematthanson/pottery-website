@@ -3,13 +3,24 @@
 @tailwind utilities;
 
 
-.banner {
-    width: 100%; /* Full width */
-    max-width: 1200px; /* Limit maximum width */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 15px; /* Consistent rounded corners */
-    object-fit: cover; /* Ensures proportional scaling */
-    margin: 0 auto; /* Center the banner */
+.banner-container {
+    position: fixed; /* Sticks the banner to the top */
+    top: 0;
+    left: 0;
+    width: 100%; /* Full-width banner */
+    z-index: 50; /* Ensures it stays above other elements */
+    background-color: white; /* Optional: Background color for contrast */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
+}
+
+.banner-container img {
+    height: 75px; /* Adjusted height for a slimmer banner */
+    object-fit: cover; /* Ensures the banner content is properly scaled */
+    border-radius: 15px; /* Optional: Rounded corners for consistency */
+}
+
+.container {
+    padding-top: 100px; /* Accounts for the banner height plus spacing */
 }
 
 /* Modal styles */

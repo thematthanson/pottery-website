@@ -19,11 +19,18 @@
     </script>
 </head>
 <body class="min-h-screen bg-gray-100">
-    <div class="flex justify-center mb-8">
+    <div class="banner-container fixed top-0 w-full z-50 bg-white shadow-lg">
         <img src="./assets/images/banner.jpg" 
-             alt="Pottery Collection Banner" 
-             class="banner">
+             alt="New Year's Pottery Giveaway Banner" 
+             class="w-full h-[75px] object-cover">
     </div>
+    
+    <div class="container mx-auto px-4 py-24"> <!-- Increased padding to account for banner height -->
+        <div id="pottery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Items will be dynamically rendered here -->
+        </div>
+    </div>
+    
     <!-- Main Container -->
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold text-center mb-8">Pottery Collection</h1>
