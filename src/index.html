@@ -7,7 +7,7 @@
     
     <!-- Stylesheet -->
     <link href="./css/styles.css" rel="stylesheet">
-    <link rel="icon" href="./assets/images/favicon.ico">
+    <link rel="icon" href="${import.meta.env.BASE_URL}assets/images/favicon.ico">
     
     <!-- EmailJS -->
     <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
@@ -20,9 +20,13 @@
 </head>
 <body class="min-h-screen bg-gray-100">
     <!-- Modal Dialog -->
-    <dialog id="pottery-modal" class="modal modal-bottom sm:modal-middle">
+    <dialog id="pottery-modal" class="modal modal-center sm:modal-middle">
         <div class="modal-box w-11/12 max-w-lg bg-white">
             <h3 class="font-bold text-lg mb-4">Order Pottery</h3>
+
+            <!-- Modal Images -->
+            <div id="modal-images" class="flex justify-center gap-4 mb-4"></div>
+
             <form id="order-form" class="space-y-4">
                 <input type="hidden" name="pottery_id" id="pottery_id">
                 
@@ -72,10 +76,6 @@
                 </div>
             </form>
         </div>
-        
-        <form method="dialog" class="modal-backdrop">
-            <button>close</button>
-        </form>
     </dialog>
 
     <!-- Main Content -->
