@@ -9,7 +9,7 @@
 }
 
 .modal-box {
-    @apply z-50 bg-white relative rounded-[30px] shadow-lg p-6 max-w-lg;
+    @apply z-50 bg-white relative rounded-[15px] shadow-lg p-6 max-w-lg;
     width: 90%; /* Adjust width if needed */
 }
 
@@ -20,11 +20,11 @@
 
 /* Card styles */
 .card {
-    @apply bg-white rounded-[30px] shadow-lg overflow-hidden;
+    @apply bg-white rounded-[15px] shadow-lg overflow-hidden;
 }
 
 .card img {
-    @apply w-full h-48 object-cover rounded-[30px];
+    @apply w-full h-48 object-cover rounded-[15px];
 }
 
 .card.taken img {
@@ -33,11 +33,11 @@
 
 /* Button styles */
 button {
-    @apply rounded-[30px];
+    @apply rounded-[15px];
 }
 
 .modal-action button {
-    @apply rounded-[30px] px-4 py-2;
+    @apply rounded-[15px] px-4 py-2;
 }
 
 /* Modal image styling */
