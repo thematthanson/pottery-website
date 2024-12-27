@@ -2,8 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Modal styles */
 .modal {
-    @apply fixed inset-0 z-50 overflow-y-auto;
+    @apply fixed inset-0 z-50 flex items-center justify-center;
+    background-color: rgba(0, 0, 0, 0.5); /* Optional dim background */
+}
+
+.modal-box {
+    @apply z-50 bg-white relative rounded-[30px] shadow-lg p-6 max-w-lg;
+    width: 90%; /* Adjust width if needed */
 }
 
 .modal[open] {
@@ -11,15 +18,7 @@
     display: flex !important;
 }
 
-.modal-box {
-    @apply z-50 bg-white relative;
-}
-
-.modal-backdrop {
-    @apply z-40;
-}
-
-/* Ensure the card and image holder have matching corner radii */
+/* Card styles */
 .card {
     @apply bg-white rounded-[30px] shadow-lg overflow-hidden;
 }
@@ -30,6 +29,15 @@
 
 .card.taken img {
     @apply grayscale;
+}
+
+/* Button styles */
+button {
+    @apply rounded-[30px];
+}
+
+.modal-action button {
+    @apply rounded-[30px] px-4 py-2;
 }
 
 /* Modal image styling */

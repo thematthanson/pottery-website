@@ -151,8 +151,14 @@ function closeModal() {
     const modal = document.getElementById('pottery-modal');
     if (modal) {
         modal.close();
+    } else {
+        console.error('Modal element not found');
     }
 }
+
+// Assign globally
+window.openModal = openModal;
+window.closeModal = closeModal; // Make closeModal globally accessible
 
 // Update the Google Sheet to mark pottery as taken
 async function updateGoogleSheet(potteryId) {
