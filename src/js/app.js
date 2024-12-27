@@ -233,3 +233,5 @@ async function markPotAsTaken(potteryId) {
         console.error('Pottery item not found');
     }
 }
+
+window.openModal = openModal;

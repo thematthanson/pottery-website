@@ -19,8 +19,9 @@
     @apply z-40;
 }
 
+/* Ensure the card and image holder have matching corner radii */
 .card {
-    @apply bg-white rounded-lg shadow-lg overflow-hidden;
+    @apply bg-white rounded-[30px] shadow-lg overflow-hidden;
 }
 
 .card img {
