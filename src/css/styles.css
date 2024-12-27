@@ -2,25 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Modal styling */
 .modal {
-    @apply fixed inset-0 z-50 overflow-y-auto;
+    @apply fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50; /* Added centering and backdrop styling */
 }
 
 .modal[open] {
     @apply opacity-100 visible pointer-events-auto;
-    display: flex !important;
+    display: flex !important; /* Ensure modal remains flexible */
 }
 
 .modal-box {
-    @apply z-50 bg-white relative;
+    @apply z-50 bg-white relative rounded-lg shadow-lg p-4; /* Improved padding and styling */
 }
 
 .modal-backdrop {
-    @apply z-40;
+    @apply z-40 fixed inset-0 bg-black bg-opacity-50; /* Ensures proper backdrop styling */
 }
 
+/* Card styling */
 .card {
-    @apply bg-white rounded-lg shadow-lg overflow-hidden;
+    @apply bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105; /* Added hover effect */
 }
 
 .card img {
@@ -28,5 +30,14 @@
 }
 
 .card.taken img {
-    @apply grayscale;
+    @apply grayscale; /* Gray out taken items */
+}
+
+.card .btn {
+    @apply mt-4; /* Spacing between card content and button */
+}
+
+/* Utility classes for responsive and hover effects */
+.card img:hover {
+    @apply transition-transform duration-200 ease-in-out; /* Smooth transition for hover */
 }
