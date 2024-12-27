@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.modal {
+    @apply fixed inset-0 z-50 overflow-y-auto;
+}
+
+.modal[open] {
+    @apply opacity-100 visible pointer-events-auto;
+    display: flex !important;
+}
+
+.modal-box {
+    @apply z-50 bg-white relative;
+}
+
+.modal-backdrop {
+    @apply z-40;
+}
+
+.card {
+    @apply bg-white rounded-lg shadow-lg overflow-hidden;
+}
+
+.card img {
+    @apply w-full h-48 object-cover;
+}
+
+.card.taken img {
+    @apply grayscale;
+}
