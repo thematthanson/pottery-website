@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // Define range and fetch data
-        const range = 'Pots!A2:J'; // Adjust range to match your header layout
+        const range = 'Pots!H2:Q'; // Updated to include columns H-Q
         potteryData = await fetchPotteryData(apiKey, spreadsheetId, range);
         console.log('Initial pottery data:', potteryData);
 
@@ -38,7 +38,10 @@ async function fetchPotteryData(apiKey, spreadsheetId, range) {
         console.log('Fetched data:', data);
 
         // Map the rows to objects for easier handling
-        const headers = ['id', 'imageUrl', 'length', 'width', 'height', 'description', 'status', 'price', 'gifUrl', 'topImageUrl'];
+        const headers = [
+            'id', 'imageUrl', 'length', 'width', 'height', 
+            'description', 'status', 'price', 'gifUrl', 'topImageUrl'
+        ];
         return data.values.map(row => {
             const rowData = {};
             headers.forEach((header, index) => {
