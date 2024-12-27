@@ -1,11 +1,22 @@
 import { defineConfig } from 'vite';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
-  root: 'src', // Root directory
-  base: '/pottery-website/', // Replace with your repository name
+  root: 'src',
+  base: '/pottery-website/', // Adjust this for your GitHub Pages repository
   build: {
-    outDir: '../dist', // Output directory
-    assetsDir: 'assets', // Assets directory
-    emptyOutDir: true, // Clean output directory before building
+    outDir: '../dist',
+    assetsDir: 'assets',
+    emptyOutDir: true,
   },
+  plugins: [
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'assets/images/*', // Copy all files in the images directory
+          dest: 'assets/images', // Destination in the dist folder
+        },
+      ],
+    }),
+  ],
 });
