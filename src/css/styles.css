@@ -19,6 +19,11 @@
     border-radius: 15px; /* Optional: Rounded corners for consistency */
 }
 
+/* Banner Overlay Text */
+.banner-overlay h1 {
+    @apply absolute inset-0 flex items-center justify-center text-white text-2xl md:text-4xl font-bold bg-black bg-opacity-50 px-4 py-2 rounded-lg;
+}
+
 .container {
     padding-top: 100px; /* Accounts for the banner height plus spacing */
 }
