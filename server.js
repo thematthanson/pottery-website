@@ -1,4 +1,6 @@
 const express = require('express');
+const path = require('path');
+
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 
@@ -29,6 +31,14 @@ app.post('/submit-selection', async (req, res) => {
     console.error('Error processing selection:', error);
     res.status(500).json({ error: 'An error occurred while processing your selection.' });
   }
+});
+
+// Serve static files from the dist directory
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// Fallback for SPA routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 // Start the server

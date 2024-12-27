@@ -1,26 +1,44 @@
 // At the top of app.js
 let potteryData = [];
 
+// Initialize the application
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const apiKey = 'AIzaSyAUJpkOxa9WhkMJ08RUF0brMzz1b2VVJiM';
-        const spreadsheetId = '11Z6kV9s-XKGsUcNxrrBm8oT9HMbUiaqnHoJbHdjxkUQ';
+        // Fetch API key and Spreadsheet ID from environment variables
+        const apiKey = import.meta.env.VITE_GOOGLE_SHEETS_API_KEY;
+        const spreadsheetId = import.meta.env.VITE_GOOGLE_SHEETS_ID;
+
+        if (!apiKey || !spreadsheetId) {
+            throw new Error('Google Sheets API Key or Spreadsheet ID is not defined.');
+        }
+        console.log('Google Sheets API Key:', import.meta.env.VITE_GOOGLE_SHEETS_API_KEY);
+        console.log('Google Sheets Spreadsheet ID:', import.meta.env.VITE_GOOGLE_SHEETS_ID);
+        console.log('EmailJS Public Key:', import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+        console.log('VITE_GOOGLE_SHEETS_API_KEY:', import.meta.env.VITE_GOOGLE_SHEETS_API_KEY);
+        console.log('VITE_GOOGLE_SHEETS_ID:', import.meta.env.VITE_GOOGLE_SHEETS_ID);
+        
+        // Define range and fetch data
         const range = 'Pots!H2:O';
         potteryData = await fetchPotteryData(apiKey, spreadsheetId, range);
         console.log('Initial pottery data:', potteryData);
+
+        // Render fetched data
         renderPotteryItems(potteryData);
     } catch (error) {
         console.error('Error initializing data:', error);
     }
 });
 
+// Fetch pottery data from Google Sheets
 async function fetchPotteryData(apiKey, spreadsheetId, range) {
     try {
         const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`;
         const response = await fetch(url);
+
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
         const data = await response.json();
         console.log('Fetched data:', data);
         return data.values || [];
@@ -30,13 +48,14 @@ async function fetchPotteryData(apiKey, spreadsheetId, range) {
     }
 }
 
+// Render pottery items in the grid
 function renderPotteryItems(potteryData) {
     const potteryGrid = document.getElementById('pottery-grid');
     if (!potteryGrid) {
         console.error('Pottery grid element not found');
         return;
     }
-    
+
     potteryGrid.innerHTML = '';
 
     potteryData.forEach(([id, imageUrl, length, width, height, description, status]) => {
@@ -49,7 +68,7 @@ function renderPotteryItems(potteryData) {
             <figure>
                 <img src="${imageUrl}" alt="Pottery ${id}" 
                      class="w-full h-48 object-cover ${isTaken ? 'grayscale' : ''}"
-                     onerror="this.src='../image/fallback-image.jpg'">
+                     onerror="this.src='./assets/images/fallback-image.jpg'">
             </figure>
             <div class="p-4">
                 <h2 class="text-xl font-semibold mb-2">Pottery ${id}</h2>
@@ -67,37 +86,35 @@ function renderPotteryItems(potteryData) {
     });
 }
 
+// Open modal to select a pottery item
 function openModal(potteryId) {
     console.log('Opening modal for pottery:', potteryId);
-    
+
     const modal = document.getElementById('pottery-modal');
     const form = modal.querySelector('form');
     const potteryIdInput = form.querySelector('input[name="pottery_id"]');
     const submitButton = form.querySelector('button[type="submit"]');
-    
+
     if (!modal || !form || !potteryIdInput) {
         console.error('Modal, form, or pottery ID input not found');
         return;
     }
 
-    // Reset form before adding new values
+    // Reset and populate the form
     form.reset();
-
-    // Set pottery ID
     potteryIdInput.value = potteryId;
     console.log('Pottery ID set to:', potteryIdInput.value);
 
-    // Find and set pottery details
+    // Add pottery details
     const pottery = potteryData.find(item => item[0] === potteryId);
     if (pottery) {
         const [id, imageUrl, length, width, height, description] = pottery;
         const size = `${length} x ${width} x ${height}`;
 
-        // Remove any existing hidden fields first
+        // Add hidden fields for details
         form.querySelectorAll('input[name="pottery_details"], input[name="pottery_size"]')
             .forEach(el => el.remove());
 
-        // Add hidden fields for pottery details
         form.insertAdjacentHTML('beforeend', `
             <input type="hidden" name="pottery_details" value="${description || 'No description available'}">
             <input type="hidden" name="pottery_size" value="${size}">
@@ -109,6 +126,7 @@ function openModal(potteryId) {
     modal.showModal();
 }
 
+// Close the modal
 function closeModal() {
     const modal = document.getElementById('pottery-modal');
     if (modal) {
@@ -116,23 +134,18 @@ function closeModal() {
     }
 }
 
+// Update the Google Sheet to mark pottery as taken
 async function updateGoogleSheet(potteryId) {
-    const url = 'https://script.google.com/macros/s/AKfycbxjKiW3A3TuVk9JGIk3EKmzWDTU-HQMILKOvzC5vSq0Fz5t3ZWjI6QMBndxcv9i02Mi/exec';
-    
+    const url = 'https://script.google.com/macros/s/.../exec';
     try {
         console.log('Updating sheet for pottery:', potteryId);
-        
-        const response = await fetch(url, {
+
+        await fetch(url, {
             method: 'POST',
             mode: 'no-cors',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                potteryId: potteryId
-            })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ potteryId }),
         });
-
         return { success: true };
     } catch (error) {
         console.error('Error updating Google Sheet:', error);
@@ -140,71 +153,47 @@ async function updateGoogleSheet(potteryId) {
     }
 }
 
-document.getElementById('order-form').addEventListener('submit', async function(e) {
+// Handle order form submission
+document.getElementById('order-form').addEventListener('submit', async function (e) {
     e.preventDefault();
     console.log('Starting form submission...');
 
-    // Debug logging for form data
     const formData = new FormData(this);
-    const debugData = {};
-    for (let [key, value] of formData.entries()) {
-        debugData[key] = value;
-    }
-    console.log('Form data being sent:', debugData);
-    
+    const potteryId = formData.get('pottery_id');
+
     const submitButton = this.querySelector('button[type="submit"]');
     submitButton.disabled = true;
     submitButton.textContent = 'Submitting...';
-    
+
     try {
-        const potteryId = formData.get('pottery_id');
         if (!potteryId) {
             throw new Error('Pottery ID not found in form');
         }
-        
+
         await updateGoogleSheet(potteryId);
         console.log('Sheet updated successfully');
 
-       // Log form data before admin email
-    console.log('Data being sent to admin email:');
-    const adminFormData = new FormData(this);
-    for (let [key, value] of adminFormData.entries()) {
-        console.log(`${key}: ${value}`);
-    }
+        const adminEmailResult = await emailjs.sendForm(
+            import.meta.env.VITE_EMAILJS_SERVICE_ID,
+            import.meta.env.VITE_EMAILJS_ADMIN_TEMPLATE_ID,
+            this,
+            import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        );
+        console.log('Admin email sent successfully:', adminEmailResult);
 
-    // Send admin notification
-    const adminEmailResult = await emailjs.sendForm(
-        'service_upmdb3d', 
-        'template_uz2a3sn', 
-        this, 
-        'vW49wpkhQr_SdPxoQ'
-    );
-    console.log('Admin email sent successfully:', adminEmailResult);
+        const customerEmailResult = await emailjs.sendForm(
+            import.meta.env.VITE_EMAILJS_SERVICE_ID,
+            import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+            this,
+            import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        );
+        console.log('Customer email sent successfully:', customerEmailResult);
 
-    // Log form data before customer email
-    console.log('Data being sent to customer email:');
-    const customerFormData = new FormData(this);
-    for (let [key, value] of customerFormData.entries()) {
-        console.log(`${key}: ${value}`);
-    }
-
-    // Send customer confirmation
-    const customerEmailResult = await emailjs.sendForm(
-        'service_upmdb3d', 
-        'template_nmghb6b', 
-        this,
-        'vW49wpkhQr_SdPxoQ'
-    );
-    console.log('Customer confirmation sent successfully:', customerEmailResult);
-
-        // Update local UI
         await markPotAsTaken(potteryId);
-        
         closeModal();
         alert('Order submitted successfully! Please check your email for confirmation.');
     } catch (error) {
-        console.error('Failed to process order:', error);
-        console.error('Error details:', error);
+        console.error('Error processing order:', error);
         alert(`Failed to submit order: ${error.message}`);
     } finally {
         submitButton.disabled = false;
@@ -212,8 +201,8 @@ document.getElementById('order-form').addEventListener('submit', async function(
     }
 });
 
+// Mark pottery as taken in the local data
 async function markPotAsTaken(potteryId) {
-    console.log('Marking pottery as taken:', potteryId);
     const index = potteryData.findIndex(item => item[0] === potteryId);
     if (index !== -1) {
         potteryData[index][6] = 'taken';

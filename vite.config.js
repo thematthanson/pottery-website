@@ -1,10 +1,11 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/pottery-website_V5_WebBuild/', // Replace with your repository name
-  root: 'src',
+  root: 'src', // Set the source directory
+  base: '/',   // Use '/' for local development
   build: {
     outDir: '../dist',
-    emptyOutDir: true
-  }
+    assetsDir: 'assets',
+    emptyOutDir: true,
+  },
 });
