@@ -136,32 +136,29 @@ function closeModal() {
 
 // Update pottery status in Google Sheets
 async function updateGoogleSheet(potteryId) {
-    const apiUrl = 'https://script.google.com/macros/s/AKfycbxe-05e4t1ykz4OHorFMZsYYhFJIpPU0AcfaBg_vjAl8pcJG4jhCAReyihbAqpQv7w/exec'; // Replace with actual Web App URL
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ potteryId }),
+    });
 
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ potteryId }),
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Failed to update Google Sheets: ${response.status} - ${errorText}`);
-        }
-
-        const data = await response.json();
-        if (!data.success) {
-            throw new Error(`Google Sheets error: ${data.error}`);
-        }
-
-        console.log('Google Sheet updated successfully:', data.message);
-    } catch (error) {
-        console.error('Error updating Google Sheets:', error.message);
-        throw error;
+    if (!response.ok) {
+      throw new Error(`Failed to update Google Sheets. Status: ${response.status}`);
     }
+
+    const data = await response.json();
+    if (!data.success) {
+      throw new Error(`Google Sheets error: ${data.error}`);
+    }
+
+    console.log('Google Sheet updated successfully:', data.message);
+  } catch (error) {
+    console.error('Error updating Google Sheets:', error.message);
+    throw error;
+  }
 }
 
 // Mark pottery as taken locally
@@ -177,19 +174,19 @@ function markPotteryAsTaken(potteryId) {
 
 // Handle form submission
 document.getElementById('order-form').addEventListener('submit', async function (e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const potteryId = new FormData(this).get('pottery_id');
+  const potteryId = new FormData(this).get('pottery_id');
 
-    try {
-        await updateGoogleSheet(potteryId);
-        markPotteryAsTaken(potteryId);
-        alert(`Thank you for ordering Piece ${potteryId}!`);
-        closeModal();
-    } catch (error) {
-        console.error('Error during order submission:', error);
-        alert('Failed to submit the order. Please try again.');
-    }
+  try {
+    await updateGoogleSheet(potteryId);
+    markPotteryAsTaken(potteryId);
+    alert(`Thank you for ordering Piece ${potteryId}!`);
+    closeModal();
+  } catch (error) {
+    console.error('Error during order submission:', error);
+    alert('Failed to submit the order. Please try again.');
+  }
 });
 
 // Make modal functions globally accessible
