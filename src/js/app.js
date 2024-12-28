@@ -61,7 +61,7 @@ function renderPotteryItems(potteryData) {
     const isTaken = status?.toLowerCase() === 'taken';
 
     const card = document.createElement('div');
-    card.className = `card ${isTaken ? 'taken' : ''}`;
+    card.className = `card ${isTaken ? 'taken' : ''}`; 
 
     card.innerHTML = `
       <figure>
@@ -172,35 +172,60 @@ function markPotteryAsTaken(potteryId) {
 
 // Handle form submission
 document.getElementById('order-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-
-  const form = this;
-  const submitButton = form.querySelector('button[type="submit"]');
-  const potteryId = new FormData(form).get('pottery_id');
-
-  try {
-    // Disable submit button while processing
-    if (submitButton) submitButton.disabled = true;
-
-    // Update Google Sheet
-    await updateGoogleSheet(potteryId);
-
-    // Update local state and UI
-    markPotteryAsTaken(potteryId);
-    
-    // Show success message
-    alert(`Thank you for ordering Piece ${potteryId}!`);
-    
-    // Close modal
-    closeModal();
-  } catch (error) {
-    console.error('Error during order submission:', error);
-    alert('Failed to submit the order. Please try again.');
-  } finally {
-    // Re-enable submit button
-    if (submitButton) submitButton.disabled = false;
-  }
-});
+    e.preventDefault();
+  
+    const form = this;
+    const submitButton = form.querySelector('button[type="submit"]');
+    const formData = new FormData(form);
+    const potteryId = formData.get('pottery_id');
+  
+    try {
+      // Disable submit button while processing
+      if (submitButton) submitButton.disabled = true;
+  
+      // Find pottery details
+      const pottery = potteryData.find(item => item[0] === potteryId);
+      if (!pottery) throw new Error('Pottery not found');
+  
+      // Send email using EmailJS
+      const templateParams = {
+        to_email: formData.get('user_email'),
+        to_name: formData.get('user_name'),
+        shipping_address: formData.get('user_address'),
+        pottery_id: potteryId,
+        pottery_description: pottery[5] || 'No description available',
+        pottery_dimensions: `${pottery[2] || 0} x ${pottery[3] || 0} x ${pottery[4] || 0}`
+      };
+  
+      const emailResponse = await emailjs.send(
+        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
+        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+        templateParams
+      );
+  
+      if (emailResponse.status !== 200) {
+        throw new Error('Failed to send email');
+      }
+  
+      // Update Google Sheet
+      await updateGoogleSheet(potteryId);
+  
+      // Update local state and UI
+      markPotteryAsTaken(potteryId);
+      
+      // Show success message
+      alert(`Thank you for ordering Piece ${potteryId}! A confirmation email has been sent to ${formData.get('user_email')}`);
+      
+      // Close modal
+      closeModal();
+    } catch (error) {
+      console.error('Error during order submission:', error);
+      alert('Failed to submit the order. Please try again.');
+    } finally {
+      // Re-enable submit button
+      if (submitButton) submitButton.disabled = false;
+    }
+  });
 
 // Make modal functions globally accessible
 window.openModal = openModal;
