@@ -65,11 +65,10 @@ function renderPotteryItems(potteryData) {
 
     potteryGrid.innerHTML = '';
 
-    potteryData.forEach((pottery, index) => {
-        console.log(`Rendering pot ${index + 1}:`, pottery);
+    potteryData.forEach(([id, imageUrl, length, width, height, description, status, price, gifUrl, topImageUrl], index) => {
+        console.log(`Processing item ${index + 1}:`, { id, gifUrl });
 
-        const { id, imageUrl, length, width, height, description, status, gifUrl } = pottery;
-        const isTaken = status.toLowerCase() === 'taken';
+        const isTaken = status?.toLowerCase() === 'taken';
 
         const card = document.createElement('div');
         card.className = `card ${isTaken ? 'taken' : ''}`;
@@ -79,7 +78,7 @@ function renderPotteryItems(potteryData) {
                 <img 
                     src="${imageUrl}" 
                     alt="Pottery ${id}" 
-                    class="w-full h-48 object-cover ${isTaken ? 'grayscale' : ''}"
+                    class="w-full h-48 object-contain rounded-[15px] ${isTaken ? 'grayscale' : ''}"
                     ${isTaken ? '' : `onmouseover="this.src='${gifUrl}'" onmouseout="this.src='${imageUrl}'"`}
                     onerror="this.onerror=null; this.src='${import.meta.env.BASE_URL}assets/images/fallback-image.jpg';">
             </figure>
@@ -87,9 +86,9 @@ function renderPotteryItems(potteryData) {
                 <h2 class="text-xl font-semibold mb-2">Pottery ${id}</h2>
                 <p class="text-gray-600 mb-2">${description || 'No description available'}</p>
                 <p class="text-gray-600 mb-4">Size: ${length || 0} x ${width || 0} x ${height || 0}</p>
-                <button class="btn btn-primary w-full" 
+                <button class="btn btn-primary w-full"
                         ${isTaken ? 'disabled' : ''}
-                        onclick="window.openModal('${id}')">
+                        onclick="openModal('${id}')">
                     ${isTaken ? 'Taken' : 'Select'}
                 </button>
             </div>

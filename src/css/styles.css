@@ -72,12 +72,22 @@ h2 {
 }
 
 .card img {
-    @apply w-full h-48 object-cover rounded-[15px];
+    @apply w-full h-48 object-contain rounded-[15px];
+    transition: transform 0.3s ease; /* Optional: Smooth scale effect */
+}
+
+.card img:hover {
+    transform: scale(1.05); /* Slight zoom on hover for visual appeal */
 }
 
 .card.taken img {
     @apply grayscale;
 }
+
+.card.taken img:hover {
+    transform: none; /* No hover effect for 'taken' items */
+}
+
 
 /* Button styling */
 button {
