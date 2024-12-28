@@ -1,5 +1,5 @@
 // Define API URL globally
-const apiUrl = 'https://script.google.com/macros/s/AKfycbzO2S3bFFy3MqFwvfowPHtlp6N1yKKcIfFKlffmqv2b4xvWHYfUtnfKCiIjxTlY9Q5n/exec';
+const apiUrl = 'https://script.google.com/macros/s/AKfycbwgVAFiqDfuT__0pejYNzu0nYO9YoUrI4tPtHz3LO3wnGR_dRWCnpJgKVQbPhDk5wuI/exec';
 
 // Global pottery data
 let potteryData = [];
