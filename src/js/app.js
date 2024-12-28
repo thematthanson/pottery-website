@@ -138,7 +138,7 @@ function openModal(potteryId) {
         <p class="text-sm text-gray-600 mt-2">Top view</p>
       </div>
     `;
-}
+  }
 
   modal.showModal();
 }
@@ -150,7 +150,7 @@ function closeModal() {
 }
 
 // Update pottery status in Google Sheets
-async function updateGoogleSheet(potteryId) {
+async function updateGoogleSheet(potteryId, userName) {
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',
@@ -159,7 +159,10 @@ async function updateGoogleSheet(potteryId) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ potteryId }),
+      body: JSON.stringify({ 
+        potteryId,
+        userName 
+      }),
     });
 
     return { success: true };
@@ -190,6 +193,7 @@ document.getElementById('order-form').addEventListener('submit', async function(
     const loadingText = submitButton.querySelector('.loading-text');
     const formData = new FormData(form);
     const potteryId = formData.get('pottery_id');
+    const userName = formData.get('user_name');
 
     try {
         // Update UI to loading state
@@ -203,7 +207,6 @@ document.getElementById('order-form').addEventListener('submit', async function(
         if (!pottery) throw new Error('Pottery not found');
 
         const templateParams = {
-            // Shared variables used in both templates
             to_name: formData.get('user_name'),
             user_name: formData.get('user_name'),
             user_email: formData.get('user_email'),
@@ -247,8 +250,8 @@ document.getElementById('order-form').addEventListener('submit', async function(
             throw new Error('Failed to send customer confirmation');
         }
 
-        // Update Google Sheet
-        await updateGoogleSheet(potteryId);
+        // Update Google Sheet with both potteryId and userName
+        await updateGoogleSheet(potteryId, userName);
 
         // Update local state and UI
         markPotteryAsTaken(potteryId);
@@ -269,7 +272,6 @@ document.getElementById('order-form').addEventListener('submit', async function(
         loadingText.classList.add('hidden');
     }
 });
-    
 
 // Make modal functions globally accessible
 window.openModal = openModal;
