@@ -136,21 +136,29 @@ function closeModal() {
 
 // Update pottery status in Google Sheets
 async function updateGoogleSheet(potteryId) {
-    const apiUrl = `https://script.google.com/macros/s/AKfycbyF3INXGJxLe9Luyzg9lnbMWC_TpwtkV87AEBDMiDhC7AMxwjMnonpXlbVWRRZnOI0h/exec`;
+    const apiUrl = `https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec`;
+
     try {
         const response = await fetch(apiUrl, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({ potteryId }),
         });
 
         if (!response.ok) {
-            throw new Error('Failed to update Google Sheets');
+            throw new Error(`Failed to update Google Sheets. Status: ${response.status}`);
         }
 
-        console.log('Google Sheet updated successfully');
+        const data = await response.json();
+        if (!data.success) {
+            throw new Error(`Google Sheets error: ${data.error}`);
+        }
+
+        console.log('Google Sheet updated successfully:', data.message);
     } catch (error) {
-        console.error('Error updating Google Sheets:', error);
+        console.error('Error updating Google Sheets:', error.message);
         throw error;
     }
 }
