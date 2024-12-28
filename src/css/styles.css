@@ -4,12 +4,12 @@
 
 /* General Background */
 body {
-    background-image: url('./assets/images/clay-texture.jpg'); 
-    background-size: cover; 
-    background-repeat: no-repeat; 
-    background-position: center; 
-    background-attachment: fixed; 
-    color: #f9f9f9; 
+    background-image: url('/src/assets/images/clay-texture.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    color: #f9f9f9;
 }
 
 /* Banner Container */
