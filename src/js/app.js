@@ -1,5 +1,5 @@
 // Define API URL globally
-const apiUrl = 'https://script.google.com/macros/s/AKfycbyycZhNojxVUZW4OZvQoB02cChAWifOV5LEu9D8XatYdQLdZWf_0TsGnF3SChArxHk9/exec';
+const apiUrl = 'https://script.google.com/macros/s/AKfycbxJlyW8nblHwZu-T7wIqxrVvnnwnM1OKi9ISxo--sf820OWfy7FI5-Gofk2uYyAXPgJ/exec';
 
 // Global pottery data
 let potteryData = [];
@@ -139,29 +139,24 @@ function closeModal() {
 
 // Update pottery status in Google Sheets
 async function updateGoogleSheet(potteryId) {
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'POST', // Ensure POST is used
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ potteryId }),
-        });
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ potteryId }),
+    });
 
-        if (!response.ok) {
-            throw new Error(`Failed to update Google Sheets. Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        if (!data.success) {
-            throw new Error(`Google Sheets error: ${data.error}`);
-        }
-
-        console.log('Google Sheet updated successfully:', data.message);
-    } catch (error) {
-        console.error('Error updating Google Sheets:', error.message);
-        throw error;
-    }
+    // Since we're using no-cors mode, we can't read the response
+    // Instead, we'll return a success status if we get here
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating Google Sheets:', error);
+    throw new Error('Failed to update Google Sheets');
+  }
 }
 
 // Mark pottery as taken locally
@@ -176,19 +171,34 @@ function markPotteryAsTaken(potteryId) {
 }
 
 // Handle form submission
-document.getElementById('order-form').addEventListener('submit', async function (e) {
+document.getElementById('order-form').addEventListener('submit', async function(e) {
   e.preventDefault();
 
-  const potteryId = new FormData(this).get('pottery_id');
+  const form = this;
+  const submitButton = form.querySelector('button[type="submit"]');
+  const potteryId = new FormData(form).get('pottery_id');
 
   try {
+    // Disable submit button while processing
+    if (submitButton) submitButton.disabled = true;
+
+    // Update Google Sheet
     await updateGoogleSheet(potteryId);
+
+    // Update local state and UI
     markPotteryAsTaken(potteryId);
+    
+    // Show success message
     alert(`Thank you for ordering Piece ${potteryId}!`);
+    
+    // Close modal
     closeModal();
   } catch (error) {
     console.error('Error during order submission:', error);
     alert('Failed to submit the order. Please try again.');
+  } finally {
+    // Re-enable submit button
+    if (submitButton) submitButton.disabled = false;
   }
 });
 
