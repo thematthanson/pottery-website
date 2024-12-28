@@ -15,9 +15,9 @@ body {
 /* Mobile-specific background adjustments */
 @media (max-width: 768px) {
     body {
-        background-size: 200px; /* Or whatever size works best for your texture */
+        background-size: 400px; /* Increased from 200px to reduce visible tiling */
         background-repeat: repeat;
-        background-attachment: scroll; /* Better performance on mobile */
+        background-attachment: scroll;
     }
 }
 
