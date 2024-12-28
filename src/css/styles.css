@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Global Background Gradient */
+/* General Background */
 body {
-    background: linear-gradient(45deg, #f9a825, #ffcc80); /* Golden orange gradient */
-    min-height: 100vh; /* Ensures gradient covers the entire viewport */
+    background: linear-gradient(135deg, #3a1c1c, #1c0d0d); /* Dark, warm gradient */
+    color: #f9f9f9; /* Light text color for readability */
 }
 
 /* Banner Container */
@@ -15,9 +15,9 @@ body {
     left: 0;
     width: 100%;
     z-index: 50;
-    background-color: white; /* Retain a white background for the banner */
+    background-color: white; /* Optional: Background for contrast */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    overflow: hidden; /* Ensures no overflow of content */
 }
 
 .banner-container img {
@@ -26,7 +26,7 @@ body {
     border-radius: 15px; /* Rounded corners for consistency */
 }
 
-/* Banner Overlay */
+/* Banner Overlay Text */
 .banner-overlay {
     position: absolute;
     top: 0;
@@ -40,47 +40,18 @@ body {
 }
 
 .banner-overlay h1 {
-    color: #ffffff;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-    font-size: 1rem; /* Adjusted for smaller screens */
-    font-weight: bold;
-    padding: 10px 15px;
-    border-radius: 10px;
-    text-align: center;
-
-    /* Responsive adjustments */
-    @media (min-width: 768px) {
-        font-size: 1.8rem; /* Moderate size for tablets */
-        padding: 15px 20px;
-    }
-
-    @media (min-width: 1024px) {
-        font-size: 2rem; /* Reduced size for desktops */
-    }
-}
-
-/* Adjustments for Mobile */
-@media (max-width: 767px) {
-    .banner-container {
-        height: 125px; /* Reduced banner size by half on mobile */
-    }
-    .banner-container img {
-        height: 125px; /* Match the reduced banner height */
-        object-fit: cover;
-    }
-    .banner-overlay {
-        height: 125px; /* Match the reduced banner height */
-    }
+    @apply text-white text-2xl md:text-4xl font-bold; /* White text */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
 }
 
 /* Main Content Container */
 .container {
-    padding-top: 150px; /* Adjusted space for the banner */
+    padding-top: 150px; /* Space for the banner */
+    padding-bottom: 50px; /* Extra bottom padding */
 }
 
 h2 {
-    @apply text-gray-700 text-center text-lg md:text-xl;
-    margin-bottom: 1.5rem;
+    @apply text-gray-700; /* Subtle, neutral color for the subheader */
 }
 
 /* Modal styles */
@@ -105,17 +76,17 @@ h2 {
 /* Card styles */
 .card {
     @apply bg-white rounded-[15px] shadow-lg overflow-hidden;
-    margin: 0;
+    margin: 0; /* Remove margins to control spacing via grid */
 }
 
 /* Card images scale on hover */
 .card img {
     @apply w-full h-auto object-cover rounded-[15px];
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease; /* Smooth scale effect */
 }
 
 .card img:hover {
-    transform: scale(1.05);
+    transform: scale(1.05); /* Scale only the image, not the card */
 }
 
 .card.taken img {
@@ -123,14 +94,14 @@ h2 {
 }
 
 .card.taken img:hover {
-    transform: none;
+    transform: none; /* No hover effect for 'taken' items */
 }
 
 /* Responsive grid for pottery cards */
 #pottery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust cards based on window width */
+    gap: 25px; /* Uniform spacing of 25px between rows and columns */
 }
 
 /* Button styling */
