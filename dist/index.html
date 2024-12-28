@@ -7,13 +7,13 @@
     
     <!-- Stylesheet -->
     <link rel="icon" href="${import.meta.env.BASE_URL}assets/images/favicon.ico">
-  <script type="module" crossorigin src="/pottery-website/assets/index-Dv72wE0Q.js"></script>
-  <link rel="stylesheet" crossorigin href="/pottery-website/assets/index-af5p5hBv.css">
+  <script type="module" crossorigin src="/pottery-website/assets/index-69pvDHki.js"></script>
+  <link rel="stylesheet" crossorigin href="/pottery-website/assets/index-CBqS99tb.css">
 </head>
 <body class="min-h-screen bg-gray-100">
-    <!-- Banner Section -->
-    <div class="relative">
-        <img src="/pottery-website/assets/banner-C9698MLQ.jpg" alt="New Year's Pottery Giveaway Banner" class="w-full h-auto">
+    <!-- Pinned Banner -->
+    <div class="banner fixed top-0 left-0 w-full h-52 z-50">
+        <img src="/pottery-website/assets/banner-C9698MLQ.jpg" alt="New Year's Pottery Giveaway Banner" class="w-full h-full object-cover">
         <div class="absolute inset-0 flex items-center justify-center">
             <h1 class="text-white text-2xl md:text-4xl font-bold text-center bg-black bg-opacity-50 px-4 py-2 rounded-lg">
                 Matt Hanson 2025 New Year's Pottery Giveaway
@@ -21,27 +21,9 @@
         </div>
     </div>
 
-    <!-- EmailJS -->
-    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-</head>
-<body class="min-h-screen bg-gray-100">
-    <div class="banner-container fixed top-0 w-full z-50 bg-white shadow-lg">
-        <img src="/pottery-website/assets/banner-C9698MLQ.jpg" 
-             alt="New Year's Pottery Giveaway Banner" 
-             class="w-full h-[75px] object-cover">
-    </div>
-    
-     <div class="container mx-auto px-4 py-8">
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8 mt-52">
         <h2 class="text-3xl font-bold text-center mb-8">Pottery Collection</h2>
-        <div id="pottery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Items will be dynamically rendered here -->
-        </div>
-    </div>
-
-    <!-- Main Container -->
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold text-center mb-8">Pottery Collection</h1>
-        <!-- Pottery Grid -->
         <div id="pottery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Items will be dynamically rendered here -->
         </div>

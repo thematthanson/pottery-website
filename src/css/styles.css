@@ -2,72 +2,128 @@
 @tailwind components;
 @tailwind utilities;
 
-
+/* Banner styles */
 .banner-container {
     position: fixed; /* Sticks the banner to the top */
     top: 0;
     left: 0;
     width: 100%; /* Full-width banner */
-    z-index: 50; /* Ensures it stays above other elements */
-    background-color: white; /* Optional: Background color for contrast */
+    z-index: 50; /* Stays above all other elements */
+    background-color: white; /* Background color for contrast */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
+    height: 75px; /* Adjusted height for slimmer banner */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .banner-container img {
-    height: 75px; /* Adjusted height for a slimmer banner */
-    object-fit: cover; /* Ensures the banner content is properly scaled */
-    border-radius: 15px; /* Optional: Rounded corners for consistency */
+    height: 100%; /* Banner height match */
+    object-fit: cover; /* Scales banner content properly */
+    border-radius: 15px; /* Consistent rounded corners */
 }
 
-/* Banner Overlay Text */
-.banner-overlay h1 {
-    @apply absolute inset-0 flex items-center justify-center text-white text-2xl md:text-4xl font-bold bg-black bg-opacity-50 px-4 py-2 rounded-lg;
+/* Overlay text for banner */
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    color: white;
+    font-size: 1.5rem; /* Responsive font sizing */
+    font-weight: bold;
+    padding: 0 1rem;
+    border-radius: 15px;
 }
 
+/* Main content offset for banner */
 .container {
-    padding-top: 100px; /* Accounts for the banner height plus spacing */
+    padding-top: 90px; /* Accounts for banner height with spacing */
 }
 
 /* Modal styles */
 .modal {
-    @apply fixed inset-0 z-50 flex items-center justify-center;
-    background-color: rgba(0, 0, 0, 0.5); /* Optional dim background */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100; /* Above other content */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Dimmed background overlay */
 }
 
 .modal-box {
-    @apply z-50 bg-white relative rounded-[15px] shadow-lg p-6 max-w-lg;
-    width: 90%; /* Adjust width if needed */
+    background: white;
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 1.5rem;
+    max-width: 500px;
+    width: 90%; /* Adjusted for responsiveness */
 }
 
-.modal[open] {
-    @apply opacity-100 visible pointer-events-auto;
-    display: flex !important;
+/* Modal image styling */
+#modal-images img {
+    width: 45%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 15px; /* Matching rounded corners */
+    margin: 0.5rem;
 }
 
 /* Card styles */
 .card {
-    @apply bg-white rounded-[15px] shadow-lg overflow-hidden;
+    background: white;
+    border-radius: 15px; /* Rounded corners for consistency */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    overflow: hidden;
 }
 
 .card img {
-    @apply w-full h-48 object-cover rounded-[15px];
+    width: 100%;
+    height: 12rem;
+    object-fit: cover;
+    border-radius: 15px;
 }
 
 .card.taken img {
-    @apply grayscale;
+    filter: grayscale(100%); /* Grayscale for taken pots */
 }
 
 /* Button styles */
 button {
-    @apply rounded-[15px];
+    border-radius: 15px; /* Consistent rounded corners */
 }
 
 .modal-action button {
-    @apply rounded-[15px] px-4 py-2;
+    border-radius: 15px;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.2s ease-in-out;
 }
 
+/* Secondary button (cancel) styles */
+button.btn-secondary {
+    background-color: #e5e7eb; /* Light gray */
+    color: #374151; /* Darker text for contrast */
+}
 
-/* Modal image styling */
-#modal-images img {
-    @apply w-1/2 h-48 object-cover rounded-[30px];
+button.btn-secondary:hover {
+    background-color: #d1d5db; /* Slightly darker gray */
+}
+
+/* Primary button (submit) styles */
+button.btn-primary {
+    background-color: #1d4ed8; /* Blue */
+    color: white;
+}
+
+button.btn-primary:hover {
+    background-color: #2563eb; /* Brighter blue */
 }
