@@ -1,5 +1,5 @@
 // Define API URL globally
-const apiUrl = 'https://script.google.com/macros/s/AKfycbxJlyW8nblHwZu-T7wIqxrVvnnwnM1OKi9ISxo--sf820OWfy7FI5-Gofk2uYyAXPgJ/exec';
+const apiUrl = 'https://script.google.com/macros/s/AKfycbwRrP7dfNH59F5O8EV-_jS99WSxhpjb9tYmwF2wx9o6ZNp6ntX18w1Fx-dhe_9lhEam/exec';
 
 // Import EmailJS
 import emailjs from '@emailjs/browser';
