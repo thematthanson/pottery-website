@@ -9,7 +9,7 @@
     left: 0;
     width: 100%;
     z-index: 50;
-    background-color: white; /* Background for contrast */
+    background-color: white; /* Optional: Background for contrast */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden; /* Ensures no overflow of content */
 }
@@ -31,25 +31,23 @@
     align-items: center;
     justify-content: center;
     pointer-events: none;
-    z-index: 1; /* Ensure overlay text sits above the banner */
 }
 
 .banner-overlay h1 {
     @apply text-white text-2xl md:text-4xl font-light; /* White text */
-    padding: 0.5rem; /* Padding for better visibility */
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8); /* Subtle text shadow */
+    padding: 0.5rem; /* Slight padding for better visibility */
 }
 
 /* Main Content Container */
 .container {
-    padding-top: 120px; /* Space for the banner */
+    padding-top: 100px; /* Space for the banner */
 }
 
 h2 {
-    @apply text-gray-700 text-center; /* Subtle, neutral color for the subheader */
+    @apply text-gray-700; /* Subtle, neutral color for the subheader */
 }
 
-/* Modal Styles */
+/* Modal styles */
 .modal {
     @apply fixed inset-0 z-50 flex items-center justify-center;
     background-color: rgba(0, 0, 0, 0.5);
@@ -68,22 +66,25 @@ h2 {
     @apply w-1/2 h-48 object-cover rounded-[15px];
 }
 
-/* Card Styles */
+/* Grid styles */
+#pottery-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+    gap: 0.5rem; /* Reduced spacing between rows and columns */
+}
+
+/* Card styles */
 .card {
     @apply bg-white rounded-[15px] shadow-lg overflow-hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centers image and content */
-    transition: none; /* No scaling effect for the entire card */
+    transition: none; /* Prevent the card from scaling */
 }
 
 .card img {
-    @apply w-full object-contain rounded-[15px];
-    transition: transform 0.3s ease; /* Smooth hover effect */
+    @apply w-full h-48 object-contain rounded-[15px];
+    transition: transform 0.3s ease; /* Smooth scaling effect */
 }
 
 .card img:hover {
-    transform: scale(1.05); /* Slight zoom on hover for image only */
+    transform: scale(1.05); /* Only scale the image */
 }
 
 .card.taken img {
@@ -94,13 +95,7 @@ h2 {
     transform: none; /* No hover effect for 'taken' items */
 }
 
-/* Grid Adjustments */
-#pottery-grid {
-    @apply grid gap-4; /* Reduce gap between items */
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Dynamic columns */
-}
-
-/* Button Styling */
+/* Button styling */
 button {
     @apply rounded-[15px];
 }
@@ -111,19 +106,4 @@ button {
 
 .btn-primary {
     @apply bg-blue-600 text-white hover:bg-blue-500;
-}
-
-/* Adjustments for Mobile */
-@media (max-width: 640px) {
-    .banner-container img {
-        height: 150px; /* Reduce banner height for smaller screens */
-    }
-
-    h2 {
-        @apply text-lg; /* Slightly smaller subheader for mobile */
-    }
-
-    .modal-box {
-        @apply max-w-sm; /* Smaller modal for mobile */
-    }
 }
