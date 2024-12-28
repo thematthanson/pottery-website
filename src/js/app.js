@@ -1,10 +1,9 @@
-// At the top of app.js
+// Global pottery data
 let potteryData = [];
 
-// Initialize the application
+// Initialize application
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // Fetch API key and Spreadsheet ID from environment variables
         const apiKey = import.meta.env.VITE_GOOGLE_SHEETS_API_KEY;
         const spreadsheetId = import.meta.env.VITE_GOOGLE_SHEETS_ID;
 
@@ -12,19 +11,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             throw new Error('Google Sheets API Key or Spreadsheet ID is not defined.');
         }
 
-        // Define range and fetch data
-        const range = 'Pots!H2:Q'; // Matches Google Sheets layout
+        const range = 'Pots!H2:Q'; // Adjust to Google Sheets layout
         potteryData = await fetchPotteryData(apiKey, spreadsheetId, range);
         console.log('Fetched pottery data:', potteryData);
 
-        // Render fetched data
         renderPotteryItems(potteryData);
     } catch (error) {
         console.error('Error initializing data:', error);
     }
 });
 
-// Fetch pottery data from Google Sheets
+// Fetch pottery data
 async function fetchPotteryData(apiKey, spreadsheetId, range) {
     try {
         const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`;
@@ -38,7 +35,7 @@ async function fetchPotteryData(apiKey, spreadsheetId, range) {
         console.log('Fetched data:', data);
 
         if (!data.values || !Array.isArray(data.values)) {
-            console.error('Data is not in the expected format:', data);
+            console.error('Invalid data format:', data);
             return [];
         }
 
@@ -49,7 +46,7 @@ async function fetchPotteryData(apiKey, spreadsheetId, range) {
     }
 }
 
-// Render pottery items in the grid
+// Render pottery cards
 function renderPotteryItems(potteryData) {
     const potteryGrid = document.getElementById('pottery-grid');
     if (!potteryGrid) {
@@ -90,10 +87,8 @@ function renderPotteryItems(potteryData) {
     });
 }
 
-// Open modal to select a pottery item
+// Open modal
 function openModal(potteryId) {
-    console.log('Opening modal for pottery:', potteryId);
-
     const modal = document.getElementById('pottery-modal');
     if (!modal) {
         console.error('Modal element not found');
@@ -122,11 +117,11 @@ function openModal(potteryId) {
     if (imageContainer) {
         imageContainer.innerHTML = `
             <div class="flex flex-col items-center">
-                <img src="${imageUrl}" alt="Side view" class="w-full h-48 object-cover rounded-[15px]">
+                <img src="${imageUrl}" alt="Side view" class="modal-image">
                 <p class="text-sm text-gray-600 mt-2">Side view</p>
             </div>
             <div class="flex flex-col items-center">
-                <img src="${topImageUrl}" alt="Top view" class="w-full h-48 object-cover rounded-[15px]">
+                <img src="${topImageUrl}" alt="Top view" class="modal-image">
                 <p class="text-sm text-gray-600 mt-2">Top view</p>
             </div>
         `;
@@ -135,92 +130,21 @@ function openModal(potteryId) {
     modal.showModal();
 }
 
-// Close the modal
+// Close modal
 function closeModal() {
     const modal = document.getElementById('pottery-modal');
-    if (modal) {
-        modal.close();
-    }
+    if (modal) modal.close();
 }
 
-// Update the Google Sheet to mark pottery as taken
-async function updateGoogleSheet(potteryId) {
-    const url = 'https://script.google.com/macros/s/AKfycbxQDAvOoUE_eGI69UPPd74jZJEQOkMsx5DNf_wq0YzhhKlVrjKVSk7knIQ6ZlH8LKyi/exec';
-    try {
-        console.log('Updating sheet for pottery:', potteryId);
-
-        await fetch(url, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ potteryId }),
-        });
-
-        console.log('Google Sheet update successful');
-    } catch (error) {
-        console.error('Error updating Google Sheet:', error);
-        throw error;
-    }
-}
-
-// Handle order form submission
+// Handle form submission
 document.getElementById('order-form').addEventListener('submit', async function (e) {
     e.preventDefault();
-    console.log('Starting form submission...');
 
-    const formData = new FormData(this);
-    const potteryId = formData.get('pottery_id');
-
-    const submitButton = this.querySelector('button[type="submit"]');
-    submitButton.disabled = true;
-    submitButton.textContent = 'Submitting...';
-
-    try {
-        if (!potteryId) {
-            throw new Error('Pottery ID not found in form');
-        }
-
-        await updateGoogleSheet(potteryId);
-        console.log('Sheet updated successfully');
-
-        const adminEmailResult = await emailjs.sendForm(
-            import.meta.env.VITE_EMAILJS_SERVICE_ID,
-            import.meta.env.VITE_EMAILJS_ADMIN_TEMPLATE_ID,
-            this,
-            import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-        );
-        console.log('Admin email sent successfully:', adminEmailResult);
-
-        const customerEmailResult = await emailjs.sendForm(
-            import.meta.env.VITE_EMAILJS_SERVICE_ID,
-            import.meta.env.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID,
-            this,
-            import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-        );
-        console.log('Customer email sent successfully:', customerEmailResult);
-
-        await markPotAsTaken(potteryId);
-        alert('Order submitted successfully! Please check your email for confirmation.');
-        closeModal(); // Automatically close the modal after order completion
-    } catch (error) {
-        console.error('Error processing order:', error);
-        alert(`Failed to submit order: ${error.message}`);
-    } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = 'Submit Order';
-    }
+    const potteryId = new FormData(this).get('pottery_id');
+    closeModal(); // Close modal immediately after submission
+    console.log(`Order submitted for pottery ID: ${potteryId}`);
 });
 
-// Mark pottery as taken in the local data
-async function markPotAsTaken(potteryId) {
-    const index = potteryData.findIndex(item => item[0] === potteryId);
-    if (index !== -1) {
-        potteryData[index][6] = 'taken';
-        renderPotteryItems(potteryData);
-    } else {
-        console.error('Pottery item not found');
-    }
-}
-
-// Make `openModal` function globally accessible
+// Make `openModal` globally accessible
 window.openModal = openModal;
+window.closeModal = closeModal;
