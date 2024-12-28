@@ -87,12 +87,12 @@ h2 {
 
 .modal-box {
     @apply bg-white rounded-[15px] shadow-lg p-6;
-    width: fit-content; /* Adjusts to the content inside */
+    width: fit-content; /* Adjusts width to the content inside */
 }
 
 .modal-box h3 {
-    color: #4b5563; 
-    @apply text-lg font-semibold; /* Adds weight for the title */
+    color: #4b5563; /* Dark gray for title text */
+    @apply text-lg font-semibold;
 }
 
 /* Modal Images */
@@ -111,7 +111,7 @@ h2 {
 #modal-images p {
     text-align: center;
     font-size: 0.875rem; 
-    color: #6b7280; 
+    color: #4b5563; /* Updated to dark gray */
     margin-top: 0.5rem; 
 }
 
