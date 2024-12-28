@@ -9,18 +9,16 @@
     left: 0;
     width: 100%;
     z-index: 50;
-    background-color: white; /* Optional: Background for contrast */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden; /* Ensures no overflow of content */
 }
 
 .banner-container img {
     width: 100%; /* Full-width scaling */
     height: auto; /* Maintains aspect ratio */
-    border-radius: 15px; /* Rounded corners for consistency */
+    filter: brightness(80%); /* Slightly dims the image for text contrast */
 }
 
-/* Banner Overlay Text */
+/* Banner Overlay */
 .banner-overlay {
     position: absolute;
     top: 0;
@@ -30,12 +28,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    pointer-events: none;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
 }
 
 .banner-overlay h1 {
-    @apply text-white text-2xl md:text-4xl font-light; /* White text */
-    padding: 0.5rem; /* Slight padding for better visibility */
+    color: #ffffff; /* White text for contrast */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Text shadow for better visibility */
+    font-size: 2rem; /* Adjusted size for readability */
+    font-weight: bold; /* Bold text for prominence */
+    padding: 10px 20px; /* Padding for spacing around text */
+    border-radius: 10px; /* Rounded edges for polished look */
+    text-align: center; /* Centers the text */
 }
 
 /* Main Content Container */
