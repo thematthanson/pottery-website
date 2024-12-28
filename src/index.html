@@ -29,7 +29,7 @@
 
     <!-- Main Content -->
     <div class="container mx-auto px-4 py-8">
-        <h2>
+        <h2 class="text-gray-700 font-bold text-lg md:text-2xl mb-8">
             Thank you for all your support in 2024 - looking forward to a fruitful 2025!
         </h2>
         <div id="pottery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -41,22 +41,22 @@
     <dialog id="pottery-modal" class="modal">
         <div class="modal-box">
             <h3 class="font-bold text-lg text-gray-700 mb-4">Order Pottery</h3>
-    
+
             <!-- Modal Images -->
             <div id="modal-images" class="flex justify-center gap-4 mb-4">
                 <div class="flex flex-col items-center">
-                    <img id="side-view-image" class="w-1/2 h-48 object-cover rounded-[15px]" alt="Side view">
+                    <img id="side-view-image" class="w-full h-48 object-cover rounded-[15px]" alt="Side view">
                     <p class="text-sm text-gray-600 mt-2">Side view</p>
                 </div>
                 <div class="flex flex-col items-center">
-                    <img id="top-view-image" class="w-1/2 h-48 object-cover rounded-[15px]" alt="Top view">
+                    <img id="top-view-image" class="w-full h-48 object-cover rounded-[15px]" alt="Top view">
                     <p class="text-sm text-gray-600 mt-2">Top view</p>
                 </div>
             </div>
-    
+
             <form id="order-form" class="space-y-4">
                 <input type="hidden" name="pottery_id" id="pottery_id">
-    
+
                 <!-- Name Field -->
                 <div class="form-control w-full">
                     <label class="label">
@@ -64,7 +64,7 @@
                     </label>
                     <input type="text" id="name" name="user_name" required class="input input-bordered w-full">
                 </div>
-    
+
                 <!-- Email Field -->
                 <div class="form-control w-full">
                     <label class="label">
@@ -72,7 +72,7 @@
                     </label>
                     <input type="email" id="email" name="user_email" required class="input input-bordered w-full">
                 </div>
-    
+
                 <!-- Address Field -->
                 <div class="form-control w-full">
                     <label class="label">
@@ -80,7 +80,7 @@
                     </label>
                     <input type="text" id="address" name="user_address" required class="input input-bordered w-full">
                 </div>
-    
+
                 <!-- Form Actions -->
                 <div class="modal-action">
                     <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>

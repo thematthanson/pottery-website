@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // Define range and fetch data
-        const range = 'Pots!H2:Q'; // Ensure this matches your Google Sheet layout
+        const range = 'Pots!H2:Q'; // Matches Google Sheets layout
         potteryData = await fetchPotteryData(apiKey, spreadsheetId, range);
         console.log('Fetched pottery data:', potteryData);
 
@@ -69,13 +69,13 @@ function renderPotteryItems(potteryData) {
             <figure>
                 <img 
                     src="${imageUrl}" 
-                    alt="Pottery ${id}" 
+                    alt="Piece ${id}" 
                     class="w-full h-auto object-cover rounded-[15px] ${isTaken ? 'grayscale' : ''}"
                     ${isTaken ? '' : `onmouseover="this.src='${gifUrl}'" onmouseout="this.src='${imageUrl}'"`}
                     onerror="this.onerror=null; this.src='${import.meta.env.BASE_URL}assets/images/fallback-image.jpg';">
             </figure>
             <div class="p-4">
-                <h2 class="text-xl font-semibold mb-2">Pottery ${id}</h2>
+                <h2 class="text-xl font-semibold mb-2">Piece ${id}</h2>
                 <p class="text-gray-600 mb-2">${description || 'No description available'}</p>
                 <p class="text-gray-600 mb-4">Size: ${length || 0} x ${width || 0} x ${height || 0}</p>
                 <button class="btn btn-primary w-full" 
@@ -121,8 +121,14 @@ function openModal(potteryId) {
     const imageContainer = document.getElementById('modal-images');
     if (imageContainer) {
         imageContainer.innerHTML = `
-            <img src="${imageUrl}" alt="Pottery Image 1" class="w-1/2 h-48 object-cover rounded-[15px]">
-            <img src="${topImageUrl}" alt="Pottery Image 2" class="w-1/2 h-48 object-cover rounded-[15px]">
+            <div class="flex flex-col items-center">
+                <img src="${imageUrl}" alt="Side view" class="w-full h-48 object-cover rounded-[15px]">
+                <p class="text-sm text-gray-600 mt-2">Side view</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <img src="${topImageUrl}" alt="Top view" class="w-full h-48 object-cover rounded-[15px]">
+                <p class="text-sm text-gray-600 mt-2">Top view</p>
+            </div>
         `;
     }
 
