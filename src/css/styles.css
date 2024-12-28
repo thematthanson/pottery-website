@@ -69,13 +69,13 @@ h2 {
 /* Grid styles */
 #pottery-grid {
     @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
-    gap: 0.5rem; /* Reduced spacing between rows and columns */
+    gap: 0.5rem; /* Ensure reduced spacing between rows and columns */
 }
 
 /* Card styles */
 .card {
     @apply bg-white rounded-[15px] shadow-lg overflow-hidden;
-    transition: none; /* Prevent the card from scaling */
+    transition: none; /* Prevent the card itself from scaling */
 }
 
 .card img {
@@ -84,7 +84,7 @@ h2 {
 }
 
 .card img:hover {
-    transform: scale(1.05); /* Only scale the image */
+    transform: scale(1.05); /* Only scale the image, not the card */
 }
 
 .card.taken img {
