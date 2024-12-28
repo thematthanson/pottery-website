@@ -136,7 +136,7 @@ function closeModal() {
 
 // Update pottery status in Google Sheets
 async function updateGoogleSheet(potteryId) {
-    const apiUrl = `https://script.google.com/macros/s/AKfycbyHA3E894XTdXCKToUuomw-pE6fvpzZongcgolFKupKkSqmud4-pEdgh6z-QW3ayA/exec`;
+    const apiUrl = `https://script.google.com/macros/s/AKfycbzVXB7OAziErZfOtF1_R9nhNTrk4osUnP2uruikuUB8Ck-0ndYu9rWJ0Wuo4n-00z-b/exec`;
 
     try {
         const response = await fetch(apiUrl, {
