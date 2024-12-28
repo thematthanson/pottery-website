@@ -197,68 +197,73 @@ document.getElementById('order-form').addEventListener('submit', async function(
         // Find pottery details
         const pottery = potteryData.find(item => item[0] === potteryId);
         if (!pottery) throw new Error('Pottery not found');
-    
-    console.log('Starting email sending process...');
 
-    // Send admin email
-console.log('Sending admin email...');
-let adminEmailResponse;
-try {
-    adminEmailResponse = await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_ADMIN_TEMPLATE_ID,
-        {...templateParams, to_name: 'Matt'}
-    );
-    console.log('Admin email sent:', adminEmailResponse.status);
-} catch (error) {
-    console.error('Admin email error:', error);
-    throw new Error('Failed to send admin notification');
-}
+        const templateParams = {
+            // Shared variables used in both templates
+            to_name: formData.get('user_name'),
+            user_name: formData.get('user_name'),
+            user_email: formData.get('user_email'),
+            user_address: formData.get('user_address'),
+            pottery_id: potteryId,
+            pottery_details: pottery[5] || 'No description available'
+        };
 
-// Send customer email
-console.log('Sending customer email...');
-let customerEmailResponse;
-try {
-    customerEmailResponse = await emailjs.send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID,
-        {
-            ...templateParams,
-            to_email: formData.get('user_email')  // Add this to explicitly set recipient
+        console.log('Starting email sending process...');
+
+        // Send admin email
+        console.log('Sending admin email...');
+        let adminEmailResponse;
+        try {
+            adminEmailResponse = await emailjs.send(
+                import.meta.env.VITE_EMAILJS_SERVICE_ID,
+                import.meta.env.VITE_EMAILJS_ADMIN_TEMPLATE_ID,
+                {...templateParams, to_name: 'Matt'}
+            );
+            console.log('Admin email sent:', adminEmailResponse.status);
+        } catch (error) {
+            console.error('Admin email error:', error);
+            throw new Error('Failed to send admin notification');
         }
-    );
-    console.log('Customer email sent:', customerEmailResponse.status);
-} catch (error) {
-    console.error('Customer email error:', error);
-    throw new Error('Failed to send customer confirmation');
-}
 
-    if (!customerEmailResponse || customerEmailResponse.status !== 200) {
-        throw new Error('Customer email sending failed');
+        // Send customer email
+        console.log('Sending customer email...');
+        let customerEmailResponse;
+        try {
+            customerEmailResponse = await emailjs.send(
+                import.meta.env.VITE_EMAILJS_SERVICE_ID,
+                import.meta.env.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID,
+                {
+                    ...templateParams,
+                    to_email: formData.get('user_email')
+                }
+            );
+            console.log('Customer email sent:', customerEmailResponse.status);
+        } catch (error) {
+            console.error('Customer email error:', error);
+            throw new Error('Failed to send customer confirmation');
+        }
+
+        // Update Google Sheet
+        await updateGoogleSheet(potteryId);
+
+        // Update local state and UI
+        markPotteryAsTaken(potteryId);
+        
+        // Show success message
+        alert(`Thank you for ordering Piece ${potteryId}! A confirmation email has been sent to ${formData.get('user_email')}`);
+        
+        // Close modal
+        closeModal();
+    } catch (error) {
+        console.error('Order submission error:', error);
+        alert(`Failed to submit the order: ${error.message}`);
+    } finally {
+        // Reset UI state
+        submitButton.disabled = false;
+        submitButton.classList.remove('opacity-50');
+        normalText.classList.remove('hidden');
+        loadingText.classList.add('hidden');
     }
-    console.log('Customer email sent successfully');
-
-    // Update Google Sheet
-    await updateGoogleSheet(potteryId);
-
-    // Update local state and UI
-    markPotteryAsTaken(potteryId);
-    
-    // Show success message
-    alert(`Thank you for ordering Piece ${potteryId}! A confirmation email has been sent to ${formData.get('user_email')}`);
-    
-    // Close modal
-    closeModal();
-} catch (error) {
-    console.error('Order submission error:', error);
-    alert(`Failed to submit the order: ${error.message}`);
-} finally {
-    // Reset UI state
-    submitButton.disabled = false;
-    submitButton.classList.remove('opacity-50');
-    normalText.classList.remove('hidden');
-    loadingText.classList.add('hidden');
-}
 });
     
 
