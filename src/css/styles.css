@@ -74,6 +74,7 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center; /* Centers image and content */
+    transition: none; /* No scaling effect for the entire card */
 }
 
 .card img {
@@ -82,7 +83,7 @@ h2 {
 }
 
 .card img:hover {
-    transform: scale(1.05); /* Slight zoom on hover */
+    transform: scale(1.05); /* Slight zoom on hover for image only */
 }
 
 .card.taken img {
@@ -91,6 +92,12 @@ h2 {
 
 .card.taken img:hover {
     transform: none; /* No hover effect for 'taken' items */
+}
+
+/* Grid Adjustments */
+#pottery-grid {
+    @apply grid gap-4; /* Reduce gap between items */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Dynamic columns */
 }
 
 /* Button Styling */
