@@ -180,28 +180,35 @@ document.getElementById('order-form').addEventListener('submit', async function(
     const potteryId = formData.get('pottery_id');
   
     try {
-      // Disable submit button while processing
-      if (submitButton) submitButton.disabled = true;
-  
-      // Find pottery details
-      const pottery = potteryData.find(item => item[0] === potteryId);
-      if (!pottery) throw new Error('Pottery not found');
-  
-      // Send email using EmailJS
-      const templateParams = {
-        to_email: formData.get('user_email'),
-        to_name: formData.get('user_name'),
-        shipping_address: formData.get('user_address'),
-        pottery_id: potteryId,
-        pottery_description: pottery[5] || 'No description available',
-        pottery_dimensions: `${pottery[2] || 0} x ${pottery[3] || 0} x ${pottery[4] || 0}`
-      };
-  
-      const emailResponse = await emailjs.send(
-        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
-        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
-        templateParams
-      );
+        // Disable submit button while processing
+        if (submitButton) submitButton.disabled = true;
+    
+        // Find pottery details
+        const pottery = potteryData.find(item => item[0] === potteryId);
+        if (!pottery) throw new Error('Pottery not found');
+    
+        // Log the template params for debugging
+        const templateParams = {
+          to_email: formData.get('user_email'),
+          to_name: formData.get('user_name'),
+          shipping_address: formData.get('user_address'),
+          pottery_id: potteryId,
+          pottery_description: pottery[5] || 'No description available',
+          pottery_dimensions: `${pottery[2] || 0} x ${pottery[3] || 0} x ${pottery[4] || 0}`
+        };
+        console.log('Email template params:', templateParams);
+    
+        // Add more detailed error handling for EmailJS
+        const emailResponse = await emailjs.send(
+          import.meta.env.VITE_EMAILJS_SERVICE_ID,
+          import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+          templateParams
+        ).catch(error => {
+          console.error('EmailJS detailed error:', error);
+          throw error;
+        });
+    
+        console.log('Email response:', emailResponse);
   
       if (emailResponse.status !== 200) {
         throw new Error('Failed to send email');
