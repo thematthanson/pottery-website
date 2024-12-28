@@ -3,42 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pottery Collection</title>
-    
+    <title>Matt Hanson's Pottery Giveaway</title>
+
     <!-- Stylesheet -->
-    <link rel="icon" href="${import.meta.env.BASE_URL}assets/images/favicon.ico">
-  <script type="module" crossorigin src="/pottery-website/assets/index-Sk4tsmQl.js"></script>
-  <link rel="stylesheet" crossorigin href="/pottery-website/assets/index-CWfGX8rv.css">
+    <link rel="icon" href="/pottery-website/assets/favicon-pHMoBAXs.ico">
+
+    <!-- EmailJS -->
+    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script type="module" crossorigin src="/pottery-website/assets/index-kCi785gh.js"></script>
+  <link rel="stylesheet" crossorigin href="/pottery-website/assets/index-ezFSI25v.css">
 </head>
 <body class="min-h-screen bg-gray-100">
-    <!-- Pinned Banner -->
+    <!-- Banner Section -->
     <div class="banner-container">
         <div class="banner-overlay">
             <h1>Matt Hanson 2025 New Year's Pottery Giveaway</h1>
         </div>
         <img src="/pottery-website/assets/banner-C9698MLQ.jpg" alt="New Year's Giveaway Banner">
     </div>
-    </div>
 
     <!-- Main Content -->
-    <div class="container mx-auto px-4 py-8 text-center">
-        <h1 class="text-3xl font-light text-center mb-8">
-            Thank you for an incredible 2024! Your support and passion have been the foundation of our success.
-            Here's to a creative and inspiring 2025 together!
-        </h1>
+    <div class="container mx-auto px-4 py-8">
+        <h2 class="text-center text-lg md:text-2xl font-light mb-8">
+            Thank you for all your support in 2024. Looking forward to a creative and fruitful 2025!
+        </h2>
+        <div id="pottery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Pottery cards will dynamically render here -->
+        </div>
     </div>
 
     <!-- Modal Dialog -->
     <dialog id="pottery-modal" class="modal">
         <div class="modal-box">
-            <h3 class="font-bold text-lg mb-4 text-center">Order Pottery</h3>
+            <h3 class="font-bold text-lg mb-4">Order Pottery</h3>
 
             <!-- Modal Images -->
-            <div id="modal-images" class="flex justify-center gap-4 mb-4">
-                <!-- Images will be dynamically injected here -->
-            </div>
+            <div id="modal-images" class="flex justify-center gap-4 mb-4"></div>
 
-            <!-- Modal Form -->
             <form id="order-form" class="space-y-4">
                 <input type="hidden" name="pottery_id" id="pottery_id">
 
@@ -79,10 +80,10 @@
                 </div>
 
                 <!-- Form Actions -->
-                <div class="modal-action flex justify-between">
+                <div class="modal-action">
                     <button type="button" 
-                     class="btn bg-gray-500 text-white hover:bg-gray-700"
-                     onclick="closeModal()">Cancel</button>
+                            class="btn btn-secondary"
+                            onclick="closeModal()">Cancel</button>
                     <button type="submit" 
                             class="btn btn-primary">Submit Order</button>
                 </div>

@@ -2,150 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Banner styles */
+/* Banner Container */
 .banner-container {
-    position: fixed; /* Sticks the banner to the top */
-    top: 0;
-    left: 0;
-    width: 100%; /* Full-width banner */
-    z-index: 50; /* Stays above all other elements */
-    background-color: white; /* Background color for contrast */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
-    height: 75px; /* Adjusted height for slimmer banner */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden; /* Prevents overspill of image */
-}
-
-.banner-container img {
-    height: 75px; /* Matches the height of the banner container */
-    width: auto; /* Automatically adjusts width to maintain aspect ratio */
-    object-fit: cover; /* Ensures the image scales properly */
-    border-radius: 15px; /* Consistent rounded corners */
-    transform: scale(0.9); /* Adjusts initial scale to make it smaller */
-    transition: transform 0.3s ease; /* Adds smooth scaling effect */
-}
-
-.banner-container img:hover {
-    transform: scale(1); /* Slight zoom-in effect on hover */
-}
-
-/* Overlay text for banner */
-.banner-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    color: white;
-    font-size: 1.5rem; /* Responsive font sizing */
-    font-weight: bold;
-    padding: 0 1rem;
-    border-radius: 15px;
-}
-
-/* Main content offset for banner */
-.container {
-    padding-top: 90px; /* Accounts for banner height with spacing */
-}
-h1 {
-    font-size: 1.875rem; /* Tailwind's 'text-3xl' */
-    font-weight: 300; /* Light font weight */
-    line-height: 1.25;
-    text-align: center;
-    color: #333; /* Adjust if needed for better contrast */
-    margin-bottom: 2rem;
-}
-
-@media (min-width: 768px) {
-    h1 {
-        font-size: 2.25rem; /* Tailwind's 'text-4xl' for larger screens */
-    }
-}
-
-/* Modal styles */
-.modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 50;
+    background-color: white; /* Optional: Background for contrast */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.banner-container img {
+    height: 75px; /* Slim banner height */
+    object-fit: cover;
+    border-radius: 15px; /* Rounded corners */
+}
+
+/* Banner Overlay Text */
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
-    z-index: 100; /* Above other content */
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(0, 0, 0, 0.5); /* Dimmed background overlay */
+    pointer-events: none;
+}
+
+.banner-overlay h1 {
+    @apply text-gray-800 text-2xl md:text-4xl font-light; /* Elegant, light font */
+}
+
+/* Main Content Container */
+.container {
+    padding-top: 100px; /* Space for the banner */
+}
+
+h2 {
+    @apply text-gray-700; /* Subtle, neutral color for the subheader */
+}
+
+/* Modal styles */
+.modal {
+    @apply fixed inset-0 z-50 flex items-center justify-center;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-box {
-    background: white;
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    padding: 1.5rem;
-    max-width: 500px;
-    width: 90%; /* Adjusted for responsiveness */
+    @apply bg-white rounded-[15px] shadow-lg p-6 max-w-lg;
+    width: 90%;
 }
 
-/* Modal image styling */
+.modal-action button {
+    @apply rounded-[15px] px-4 py-2;
+}
+
 #modal-images img {
-    width: 45%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 15px; /* Matching rounded corners */
-    margin: 0.5rem;
+    @apply w-1/2 h-48 object-cover rounded-[15px];
 }
 
 /* Card styles */
 .card {
-    background: white;
-    border-radius: 15px; /* Rounded corners for consistency */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    overflow: hidden;
+    @apply bg-white rounded-[15px] shadow-lg overflow-hidden;
 }
 
 .card img {
-    width: 100%;
-    height: 12rem;
-    object-fit: cover;
-    border-radius: 15px;
+    @apply w-full h-48 object-cover rounded-[15px];
 }
 
 .card.taken img {
-    filter: grayscale(100%); /* Grayscale for taken pots */
+    @apply grayscale;
 }
 
-/* Button styles */
+/* Button styling */
 button {
-    border-radius: 15px; /* Consistent rounded corners */
+    @apply rounded-[15px];
 }
 
-.modal-action button {
-    border-radius: 15px;
-    padding: 0.5rem 1rem;
-    transition: background-color 0.2s ease-in-out;
+.btn-secondary {
+    @apply bg-gray-500 text-white hover:bg-gray-400;
 }
 
-/* Secondary button (cancel) styles */
-button.btn-secondary {
-    background-color: #e5e7eb; /* Light gray */
-    color: #374151; /* Darker text for contrast */
-}
-
-button.btn-secondary:hover {
-    background-color: #d1d5db; /* Slightly darker gray */
-}
-
-/* Primary button (submit) styles */
-button.btn-primary {
-    background-color: #1d4ed8; /* Blue */
-    color: white;
-}
-
-button.btn-primary:hover {
-    background-color: #2563eb; /* Brighter blue */
+.btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-500;
 }
