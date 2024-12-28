@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const apiKey = import.meta.env.VITE_GOOGLE_SHEETS_API_KEY;
         const spreadsheetId = import.meta.env.VITE_GOOGLE_SHEETS_ID;
+        const apiUrl = 'https://script.google.com/macros/s/AKfycbyJXvIAfEZOZLElapLS-QpUAalqqNmshnPBVnyMbYQLRt0gBQYqMtH1lBKn2hrdkrAP/exec';
 
         if (!apiKey || !spreadsheetId) {
             throw new Error('Google Sheets API Key or Spreadsheet ID is not defined.');
