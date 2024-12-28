@@ -11,12 +11,13 @@
     z-index: 50;
     background-color: white; /* Optional: Background for contrast */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Ensures no overflow of content */
 }
 
 .banner-container img {
-    height: 75px; /* Slim banner height */
-    object-fit: cover;
-    border-radius: 15px; /* Rounded corners */
+    width: 100%; /* Full-width scaling */
+    height: auto; /* Maintains aspect ratio */
+    border-radius: 15px; /* Rounded corners for consistency */
 }
 
 /* Banner Overlay Text */
@@ -33,7 +34,8 @@
 }
 
 .banner-overlay h1 {
-    @apply text-gray-800 text-2xl md:text-4xl font-light; /* Elegant, light font */
+    @apply text-white text-2xl md:text-4xl font-light; /* White text */
+    padding: 0.5rem; /* Slight padding for better visibility */
 }
 
 /* Main Content Container */
