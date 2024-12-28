@@ -71,14 +71,15 @@ function renderPotteryItems(potteryData) {
 
         const card = document.createElement('div');
         card.className = `card ${isTaken ? 'taken' : ''}`;
+        card.style.width = 'fit-content'; // Dynamically adjusts card width to content
 
         card.innerHTML = `
-            <figure>
+            <figure style="width: 100%;">
                 <img 
                     src="${imageUrl}" 
                     alt="Pottery ${id}" 
-                    class="w-full h-48 object-cover rounded-[15px] ${isTaken ? 'grayscale' : ''}"
-                    onmouseover="this.src='${isTaken ? import.meta.env.BASE_URL + "assets/images/soldout.webp" : gifUrl}'"
+                    class="object-cover w-full h-48 rounded-[15px] ${isTaken ? 'grayscale' : ''}"
+                    ${isTaken ? `onmouseover="this.src='${import.meta.env.BASE_URL}assets/images/soldout.webp'"` : `onmouseover="this.src='${gifUrl}'"`}
                     onmouseout="this.src='${imageUrl}'"
                     onerror="this.onerror=null; this.src='${import.meta.env.BASE_URL}assets/images/fallback-image.jpg';">
             </figure>
@@ -86,7 +87,6 @@ function renderPotteryItems(potteryData) {
                 <h2 class="text-xl font-semibold mb-2">Pottery ${id}</h2>
                 <p class="text-gray-600 mb-2">${description || 'No description available'}</p>
                 <p class="text-gray-600 mb-4">Size: ${length || 0} x ${width || 0} x ${height || 0}</p>
-                <p class="text-gray-600 mb-4">Price: $${price || 'N/A'}</p>
                 <button class="btn btn-primary w-full" 
                         ${isTaken ? 'disabled' : ''}
                         onclick="window.openModal('${id}')">
