@@ -32,8 +32,6 @@ async function fetchPotteryData(apiKey, spreadsheetId, range) {
         }
 
         const data = await response.json();
-        console.log('Fetched data:', data);
-
         if (!data.values || !Array.isArray(data.values)) {
             console.error('Invalid data format:', data);
             return [];
@@ -136,18 +134,49 @@ function closeModal() {
     if (modal) modal.close();
 }
 
+// Update pottery status in Google Sheets
+async function updateGoogleSheet(potteryId) {
+    const apiUrl = `https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID/exec`;
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ potteryId }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update Google Sheets');
+        }
+
+        console.log('Google Sheet updated successfully');
+    } catch (error) {
+        console.error('Error updating Google Sheets:', error);
+        throw error;
+    }
+}
+
+// Mark pottery as taken locally
+function markPotteryAsTaken(potteryId) {
+    const potteryIndex = potteryData.findIndex(item => item[0] === potteryId);
+    if (potteryIndex !== -1) {
+        potteryData[potteryIndex][6] = 'taken'; // Update status locally
+        renderPotteryItems(potteryData); // Re-render cards
+    } else {
+        console.error('Pottery ID not found in local data');
+    }
+}
+
 // Handle form submission
 document.getElementById('order-form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const potteryId = new FormData(this).get('pottery_id');
-    try {
-        // Simulate order handling
-        console.log(`Order submitted for pottery ID: ${potteryId}`);
-        await new Promise(resolve => setTimeout(resolve, 1000));
 
+    try {
+        await updateGoogleSheet(potteryId);
+        markPotteryAsTaken(potteryId);
         alert(`Thank you for ordering Piece ${potteryId}!`);
-        closeModal(); // Close modal after submission
+        closeModal();
     } catch (error) {
         console.error('Error during order submission:', error);
         alert('Failed to submit the order. Please try again.');
