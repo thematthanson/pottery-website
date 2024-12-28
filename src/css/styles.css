@@ -66,25 +66,20 @@ h2 {
     @apply w-1/2 h-48 object-cover rounded-[15px];
 }
 
-/* Grid styles */
-#pottery-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
-    gap: 0.5rem; /* Ensure reduced spacing between rows and columns */
-}
-
 /* Card styles */
 .card {
     @apply bg-white rounded-[15px] shadow-lg overflow-hidden;
-    transition: none; /* Prevent the card itself from scaling */
+    margin: 0; /* Remove margins to control spacing via grid */
 }
 
+/* Card images scale on hover */
 .card img {
-    @apply w-full h-48 object-contain rounded-[15px];
-    transition: transform 0.3s ease; /* Smooth scaling effect */
+    @apply w-full h-auto object-cover rounded-[15px];
+    transition: transform 0.3s ease; /* Smooth scale effect */
 }
 
 .card img:hover {
-    transform: scale(1.05); /* Only scale the image, not the card */
+    transform: scale(1.05); /* Scale only the image, not the card */
 }
 
 .card.taken img {
@@ -93,6 +88,13 @@ h2 {
 
 .card.taken img:hover {
     transform: none; /* No hover effect for 'taken' items */
+}
+
+/* Responsive grid for pottery cards */
+#pottery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust cards based on window width */
+    gap: 25px; /* Uniform spacing of 25px between rows and columns */
 }
 
 /* Button styling */
