@@ -136,7 +136,7 @@ function closeModal() {
 
 // Update pottery status in Google Sheets
 async function updateGoogleSheet(potteryId) {
-    const apiUrl = `https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID/exec`;
+    const apiUrl = 'https://script.google.com/macros/s/AKfycbzVXB7OAziErZfOtF1_R9nhNTrk4osUnP2uruikuUB8Ck-0ndYu9rWJ0Wuo4n-00z-b/exec'; // Replace with your script URL
 
     try {
         const response = await fetch(apiUrl, {
@@ -148,7 +148,8 @@ async function updateGoogleSheet(potteryId) {
         });
 
         if (!response.ok) {
-            throw new Error(`Failed to update Google Sheets. Status: ${response.status}`);
+            const errorText = await response.text();
+            throw new Error(`Failed to update Google Sheets: ${response.status} - ${errorText}`);
         }
 
         const data = await response.json();
