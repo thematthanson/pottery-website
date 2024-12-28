@@ -1,17 +1,16 @@
 // Define API URL globally
 const apiUrl = 'https://script.google.com/macros/s/AKfycbxJlyW8nblHwZu-T7wIqxrVvnnwnM1OKi9ISxo--sf820OWfy7FI5-Gofk2uYyAXPgJ/exec';
 
-// Global pottery data
-let potteryData = [];
-
+// Import EmailJS
 import emailjs from '@emailjs/browser';
 
-// Initialize EmailJS at the start
+// Initialize EmailJS
 emailjs.init({
     publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 });
 
-// Rest of your code...
+// Global pottery data
+let potteryData = [];
 
 // Initialize application
 document.addEventListener('DOMContentLoaded', async () => {
@@ -194,10 +193,9 @@ document.getElementById('order-form').addEventListener('submit', async function(
     const pottery = potteryData.find(item => item[0] === potteryId);
     if (!pottery) throw new Error('Pottery not found');
 
-    // Prepare template params
     const templateParams = {
         // Shared variables used in both templates
-        to_name: 'Matt', // For admin template
+        to_name: formData.get('user_name'),
         user_name: formData.get('user_name'),
         user_email: formData.get('user_email'),
         user_address: formData.get('user_address'),
@@ -205,36 +203,39 @@ document.getElementById('order-form').addEventListener('submit', async function(
         pottery_details: pottery[5] || 'No description available'
     };
     
-    console.log('Email template params:', templateParams);
+    console.log('Starting email sending process...');
 
-    // Send email to customer
-const customerEmailResponse = await emailjs.send(
-    import.meta.env.VITE_EMAILJS_SERVICE_ID,
-    import.meta.env.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID,
-    templateParams,
-    import.meta.env.VITE_EMAILJS_PUBLIC_KEY  // Add public key here
-).catch(error => {
-    console.error('Customer EmailJS error:', error);
-    throw error;
-});
+    // Send admin email
+    console.log('Sending admin email...');
+    const adminEmailResponse = await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_ADMIN_TEMPLATE_ID,
+        {...templateParams, to_name: 'Matt'}
+    ).catch(error => {
+        console.error('Admin email failed:', error);
+        throw new Error('Failed to send admin notification');
+    });
 
-// Send email to admin
-const adminEmailResponse = await emailjs.send(
-    import.meta.env.VITE_EMAILJS_SERVICE_ID,
-    import.meta.env.VITE_EMAILJS_ADMIN_TEMPLATE_ID,
-    templateParams,
-    import.meta.env.VITE_EMAILJS_PUBLIC_KEY  // Add public key here
-).catch(error => {
-    console.error('Admin EmailJS error:', error);
-    throw error;
-});
-
-    console.log('Admin email response:', adminEmailResponse);
-
-    // Check both responses
-    if (customerEmailResponse.status !== 200 || adminEmailResponse.status !== 200) {
-      throw new Error('Failed to send one or more emails');
+    if (!adminEmailResponse || adminEmailResponse.status !== 200) {
+        throw new Error('Admin email sending failed');
     }
+    console.log('Admin email sent successfully');
+
+    // Send customer email
+    console.log('Sending customer email...');
+    const customerEmailResponse = await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID,
+        templateParams
+    ).catch(error => {
+        console.error('Customer email failed:', error);
+        throw new Error('Failed to send customer confirmation');
+    });
+
+    if (!customerEmailResponse || customerEmailResponse.status !== 200) {
+        throw new Error('Customer email sending failed');
+    }
+    console.log('Customer email sent successfully');
 
     // Update Google Sheet
     await updateGoogleSheet(potteryId);
@@ -248,8 +249,8 @@ const adminEmailResponse = await emailjs.send(
     // Close modal
     closeModal();
   } catch (error) {
-    console.error('Error during order submission:', error);
-    alert('Failed to submit the order. Please try again.');
+    console.error('Order submission error:', error);
+    alert(`Failed to submit the order: ${error.message}`);
   } finally {
     // Re-enable submit button
     if (submitButton) submitButton.disabled = false;
