@@ -13,9 +13,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // Define range and fetch data
-        const range = 'Pots!H2:Q'; // Updated to include columns H-Q
+        const range = 'Pots!H2:Q'; // Ensure this matches your Google Sheet layout
         potteryData = await fetchPotteryData(apiKey, spreadsheetId, range);
-        console.log('Initial pottery data:', potteryData);
+        console.log('Fetched pottery data:', potteryData);
 
         // Render fetched data
         renderPotteryItems(potteryData);
@@ -37,18 +37,12 @@ async function fetchPotteryData(apiKey, spreadsheetId, range) {
         const data = await response.json();
         console.log('Fetched data:', data);
 
-        // Map the rows to objects for easier handling
-        const headers = [
-            'id', 'imageUrl', 'length', 'width', 'height', 
-            'description', 'status', 'price', 'gifUrl', 'topImageUrl'
-        ];
-        return data.values.map(row => {
-            const rowData = {};
-            headers.forEach((header, index) => {
-                rowData[header] = row[index] || ''; // Default to empty string if no value
-            });
-            return rowData;
-        });
+        if (!data.values || !Array.isArray(data.values)) {
+            console.error('Data is not in the expected format:', data);
+            return [];
+        }
+
+        return data.values;
     } catch (error) {
         console.error('Error fetching data:', error);
         throw error;
@@ -66,7 +60,12 @@ function renderPotteryItems(potteryData) {
     potteryGrid.innerHTML = '';
 
     potteryData.forEach(([id, imageUrl, length, width, height, description, status, price, gifUrl, topImageUrl], index) => {
-        console.log(`Processing item ${index + 1}:`, { id, gifUrl });
+        if (!id || !imageUrl) {
+            console.warn('Skipping invalid pottery item:', { id, imageUrl });
+            return;
+        }
+
+        console.log(`Rendering item ${index + 1}:`, { id, imageUrl, gifUrl });
 
         const isTaken = status?.toLowerCase() === 'taken';
 
@@ -78,17 +77,19 @@ function renderPotteryItems(potteryData) {
                 <img 
                     src="${imageUrl}" 
                     alt="Pottery ${id}" 
-                    class="w-full h-48 object-contain rounded-[15px] ${isTaken ? 'grayscale' : ''}"
-                    ${isTaken ? '' : `onmouseover="this.src='${gifUrl}'" onmouseout="this.src='${imageUrl}'"`}
+                    class="w-full h-48 object-cover rounded-[15px] ${isTaken ? 'grayscale' : ''}"
+                    onmouseover="this.src='${isTaken ? import.meta.env.BASE_URL + "assets/images/soldout.webp" : gifUrl}'"
+                    onmouseout="this.src='${imageUrl}'"
                     onerror="this.onerror=null; this.src='${import.meta.env.BASE_URL}assets/images/fallback-image.jpg';">
             </figure>
             <div class="p-4">
                 <h2 class="text-xl font-semibold mb-2">Pottery ${id}</h2>
                 <p class="text-gray-600 mb-2">${description || 'No description available'}</p>
                 <p class="text-gray-600 mb-4">Size: ${length || 0} x ${width || 0} x ${height || 0}</p>
-                <button class="btn btn-primary w-full"
+                <p class="text-gray-600 mb-4">Price: $${price || 'N/A'}</p>
+                <button class="btn btn-primary w-full" 
                         ${isTaken ? 'disabled' : ''}
-                        onclick="openModal('${id}')">
+                        onclick="window.openModal('${id}')">
                     ${isTaken ? 'Taken' : 'Select'}
                 </button>
             </div>
@@ -103,45 +104,37 @@ function openModal(potteryId) {
     console.log('Opening modal for pottery:', potteryId);
 
     const modal = document.getElementById('pottery-modal');
-    const form = modal.querySelector('form');
-    const potteryIdInput = form.querySelector('input[name="pottery_id"]');
-    const submitButton = form.querySelector('button[type="submit"]');
-
-    if (!modal || !form || !potteryIdInput) {
-        console.error('Modal, form, or pottery ID input not found');
+    if (!modal) {
+        console.error('Modal element not found');
         return;
     }
 
-    // Reset and populate the form
+    const form = modal.querySelector('form');
+    const potteryIdInput = form.querySelector('input[name="pottery_id"]');
+    if (!form || !potteryIdInput) {
+        console.error('Form or pottery ID input not found in modal');
+        return;
+    }
+
     form.reset();
     potteryIdInput.value = potteryId;
 
-    // Add pottery details and images
-    const pottery = potteryData.find(item => item.id === potteryId);
-    if (pottery) {
-        const { imageUrl, topImageUrl, description, length, width, height } = pottery;
-
-        // Populate images in the modal
-        const imageContainer = document.getElementById('modal-images');
-        imageContainer.innerHTML = `
-            <img src="${imageUrl}" alt="Pottery Image 1" class="w-1/2 h-48 object-cover rounded-[30px]">
-            <img src="${topImageUrl}" alt="Pottery Image 2" class="w-1/2 h-48 object-cover rounded-[30px]">
-        `;
-
-        const size = `${length || 0} x ${width || 0} x ${height || 0}`;
-
-        // Add hidden fields for details
-        form.querySelectorAll('input[name="pottery_details"], input[name="pottery_size"]')
-            .forEach(el => el.remove());
-
-        form.insertAdjacentHTML('beforeend', `
-            <input type="hidden" name="pottery_details" value="${description || 'No description available'}">
-            <input type="hidden" name="pottery_size" value="${size}">
-        `);
+    const pottery = potteryData.find(item => item[0] === potteryId);
+    if (!pottery) {
+        console.error('Pottery item not found for ID:', potteryId);
+        return;
     }
 
-    submitButton.disabled = false;
-    submitButton.textContent = 'Submit Order';
+    const [id, imageUrl, , , , , , , , topImageUrl] = pottery;
+
+    const imageContainer = document.getElementById('modal-images');
+    if (imageContainer) {
+        imageContainer.innerHTML = `
+            <img src="${imageUrl}" alt="Pottery Image 1" class="w-1/2 h-48 object-cover rounded-[15px]">
+            <img src="${topImageUrl}" alt="Pottery Image 2" class="w-1/2 h-48 object-cover rounded-[15px]">
+        `;
+    }
+
     modal.showModal();
 }
 
@@ -150,14 +143,8 @@ function closeModal() {
     const modal = document.getElementById('pottery-modal');
     if (modal) {
         modal.close();
-    } else {
-        console.error('Modal element not found');
     }
 }
-
-// Assign globally
-window.openModal = openModal;
-window.closeModal = closeModal; // Make closeModal globally accessible
 
 // Update the Google Sheet to mark pottery as taken
 async function updateGoogleSheet(potteryId) {
@@ -165,15 +152,14 @@ async function updateGoogleSheet(potteryId) {
     try {
         console.log('Updating sheet for pottery:', potteryId);
 
-        const response = await fetch(url, {
+        await fetch(url, {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ potteryId }),
         });
 
-        console.log('Google Sheet Response:', response);
-        return { success: true };
+        console.log('Google Sheet update successful');
     } catch (error) {
         console.error('Error updating Google Sheet:', error);
         throw error;
@@ -200,24 +186,6 @@ document.getElementById('order-form').addEventListener('submit', async function 
         await updateGoogleSheet(potteryId);
         console.log('Sheet updated successfully');
 
-        const adminEmailResult = await emailjs.sendForm(
-            import.meta.env.VITE_EMAILJS_SERVICE_ID,
-            import.meta.env.VITE_EMAILJS_ADMIN_TEMPLATE_ID,
-            this,
-            import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-        );
-        console.log('Admin email sent successfully:', adminEmailResult);
-
-        const customerEmailResult = await emailjs.sendForm(
-            import.meta.env.VITE_EMAILJS_SERVICE_ID,
-            import.meta.env.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID,
-            this,
-            import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-        );
-        console.log('Customer email sent successfully:', customerEmailResult);
-
-        await markPotAsTaken(potteryId);
-        closeModal();
         alert('Order submitted successfully! Please check your email for confirmation.');
     } catch (error) {
         console.error('Error processing order:', error);
@@ -230,13 +198,14 @@ document.getElementById('order-form').addEventListener('submit', async function 
 
 // Mark pottery as taken in the local data
 async function markPotAsTaken(potteryId) {
-    const index = potteryData.findIndex(item => item.id === potteryId);
+    const index = potteryData.findIndex(item => item[0] === potteryId);
     if (index !== -1) {
-        potteryData[index].status = 'taken';
+        potteryData[index][6] = 'taken';
         renderPotteryItems(potteryData);
     } else {
         console.error('Pottery item not found');
     }
 }
 
+// Make `openModal` function globally accessible
 window.openModal = openModal;
