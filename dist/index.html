@@ -10,74 +10,73 @@
 
     <!-- EmailJS -->
     <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script type="module" crossorigin src="/pottery-website/assets/main-BDffUCdD.js"></script>
-  <link rel="stylesheet" crossorigin href="/pottery-website/assets/main-xAUsc2qI.css">
+  <script type="module" crossorigin src="/pottery-website/assets/main-BKN7s4XK.js"></script>
+  <link rel="stylesheet" crossorigin href="/pottery-website/assets/main-0ccSbAtD.css">
 </head>
 <body class="min-h-screen bg-gray-100">
     <!-- Banner Section -->
-    <div class="banner-container">
-        <img src="/pottery-website/assets/banner-B5dIyV42.jpg" alt="New Year's Giveaway Banner">
-        <div class="banner-overlay">
-            <h1>Matt Hanson's 2025 New Year's Pottery Giveaway</h1>
+    <header class="banner-container">
+        <img src="/pottery-website/assets/banner-B5dIyV42.jpg" alt="New Year's Giveaway Banner" class="w-full h-full object-cover rounded-[15px]">
+        <div class="banner-overlay flex items-center justify-center">
+            <h1 class="text-white text-2xl md:text-4xl font-bold text-center shadow-lg">
+                Matt Hanson's 2025 New Year's Pottery Giveaway
+            </h1>
         </div>
-    </div>
+    </header>
 
     <!-- Main Content -->
-    <div class="container mx-auto px-4 py-8">
-        <h2 class="text-gray-700 font-bold text-lg md:text-2xl mb-8">
-            Thank you for all your support in 2024 - looking forward to a fruitful 2025!
-        </h2>
-        <div id="pottery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <main class="container mx-auto px-4 py-8">
+        <section class="mb-8 text-center">
+            <h2 class="text-gray-700 font-bold text-lg md:text-2xl">
+                Thank you for all your support in 2024 - looking forward to a fruitful 2025!
+            </h2>
+        </section>
+        <section id="pottery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Pottery cards will dynamically render here -->
-        </div>
-    </div>
+        </section>
+    </main>
 
     <!-- Modal Dialog -->
     <dialog id="pottery-modal" class="modal">
         <div class="modal-box">
-            <h3 class="font-bold text-lg text-gray-700 mb-4">Order Pottery</h3>
+            <h3 class="text-lg font-bold text-gray-700 mb-4">Order Pottery</h3>
 
             <!-- Modal Images -->
             <div id="modal-images" class="flex justify-center gap-4 mb-4">
                 <div class="flex flex-col items-center">
-                    <img id="side-view-image" class="w-full h-48 object-cover rounded-[15px]" alt="Side view">
+                    <img id="side-view-image" src="" alt="Side view of pottery" class="modal-image rounded-[15px]">
                     <p class="text-sm text-gray-600 mt-2">Side view</p>
                 </div>
                 <div class="flex flex-col items-center">
-                    <img id="top-view-image" class="w-full h-48 object-cover rounded-[15px]" alt="Top view">
+                    <img id="top-view-image" src="" alt="Top view of pottery" class="modal-image rounded-[15px]">
                     <p class="text-sm text-gray-600 mt-2">Top view</p>
                 </div>
             </div>
 
+            <!-- Order Form -->
             <form id="order-form" class="space-y-4">
                 <input type="hidden" name="pottery_id" id="pottery_id">
 
                 <!-- Name Field -->
-                <div class="form-control w-full">
-                    <label class="label">
-                        <span class="label-text">Name</span>
-                    </label>
-                    <input type="text" id="name" name="user_name" required class="input input-bordered w-full">
+                <div class="form-control">
+                    <label for="name" class="label-text">Name</label>
+                    <input type="text" id="name" name="user_name" required class="input input-bordered w-full" placeholder="Enter your name">
                 </div>
 
                 <!-- Email Field -->
-                <div class="form-control w-full">
-                    <label class="label">
-                        <span class="label-text">Email</span>
-                    </label>
-                    <input type="email" id="email" name="user_email" required class="input input-bordered w-full">
+                <div class="form-control">
+                    <label for="email" class="label-text">Email</label>
+                    <input type="email" id="email" name="user_email" required class="input input-bordered w-full" placeholder="Enter your email">
                 </div>
 
                 <!-- Address Field -->
-                <div class="form-control w-full">
-                    <label class="label">
-                        <span class="label-text">Address</span>
-                    </label>
-                    <input type="text" id="address" name="user_address" required class="input input-bordered w-full">
+                <div class="form-control">
+                    <label for="address" class="label-text">Address</label>
+                    <input type="text" id="address" name="user_address" required class="input input-bordered w-full" placeholder="Enter your address">
                 </div>
 
                 <!-- Form Actions -->
-                <div class="modal-action">
+                <div class="modal-action flex justify-between mt-4">
                     <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
                     <button type="submit" class="btn btn-primary">Submit Order</button>
                 </div>

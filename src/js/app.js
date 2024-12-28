@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             throw new Error('Google Sheets API Key or Spreadsheet ID is not defined.');
         }
 
-        const range = 'Pots!H2:Q'; // Adjust to Google Sheets layout
+        const range = 'Pots!H2:Q'; // Matches Google Sheets layout
         potteryData = await fetchPotteryData(apiKey, spreadsheetId, range);
         console.log('Fetched pottery data:', potteryData);
 
@@ -141,10 +141,10 @@ document.getElementById('order-form').addEventListener('submit', async function 
     e.preventDefault();
 
     const potteryId = new FormData(this).get('pottery_id');
-    closeModal(); // Close modal immediately after submission
     console.log(`Order submitted for pottery ID: ${potteryId}`);
+    closeModal(); // Close modal immediately after submission
 });
 
-// Make `openModal` globally accessible
+// Make functions globally accessible
 window.openModal = openModal;
 window.closeModal = closeModal;

@@ -26,4 +26,4 @@
                 <img src="${d}" alt="Top view" class="modal-image">
                 <p class="text-sm text-gray-600 mt-2">Top view</p>
             </div>
-        `),r.showModal()}function f(){const o=document.getElementById("pottery-modal");o&&o.close()}document.getElementById("order-form").addEventListener("submit",async function(o){o.preventDefault();const r=new FormData(this).get("pottery_id");f(),console.log(`Order submitted for pottery ID: ${r}`)});window.openModal=h;window.closeModal=f;
+        `),r.showModal()}function f(){const o=document.getElementById("pottery-modal");o&&o.close()}document.getElementById("order-form").addEventListener("submit",async function(o){o.preventDefault();const r=new FormData(this).get("pottery_id");console.log(`Order submitted for pottery ID: ${r}`),f()});window.openModal=h;window.closeModal=f;
