@@ -227,7 +227,10 @@ try {
     customerEmailResponse = await emailjs.send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID,
-        templateParams
+        {
+            ...templateParams,
+            to_email: formData.get('user_email')  // Add this to explicitly set recipient
+        }
     );
     console.log('Customer email sent:', customerEmailResponse.status);
 } catch (error) {
