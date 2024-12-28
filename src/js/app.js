@@ -1,5 +1,5 @@
 // Define API URL globally
-const apiUrl = 'https://script.google.com/macros/s/AKfycbyJXvIAfEZOZLElapLS-QpUAalqqNmshnPBVnyMbYQLRt0gBQYqMtH1lBKn2hrdkrAP/exec';
+const apiUrl = 'https://script.google.com/macros/s/AKfycbyZU2klX4Wwcev6Q2FvzwkswAH_z2DeNZEcO96N259jgREc2XgQ9eoftDn3FqYL3yFa/exec';
 
 // Global pottery data
 let potteryData = [];
@@ -139,29 +139,29 @@ function closeModal() {
 
 // Update pottery status in Google Sheets
 async function updateGoogleSheet(potteryId) {
-  try {
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ potteryId }),
-    });
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST', // Ensure POST is used
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ potteryId }),
+        });
 
-    if (!response.ok) {
-      throw new Error(`Failed to update Google Sheets. Status: ${response.status}`);
+        if (!response.ok) {
+            throw new Error(`Failed to update Google Sheets. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (!data.success) {
+            throw new Error(`Google Sheets error: ${data.error}`);
+        }
+
+        console.log('Google Sheet updated successfully:', data.message);
+    } catch (error) {
+        console.error('Error updating Google Sheets:', error.message);
+        throw error;
     }
-
-    const data = await response.json();
-    if (!data.success) {
-      throw new Error(`Google Sheets error: ${data.error}`);
-    }
-
-    console.log('Google Sheet updated successfully:', data.message);
-  } catch (error) {
-    console.error('Error updating Google Sheets:', error.message);
-    throw error;
-  }
 }
 
 // Mark pottery as taken locally
