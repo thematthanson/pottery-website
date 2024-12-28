@@ -206,31 +206,34 @@ document.getElementById('order-form').addEventListener('submit', async function(
     console.log('Starting email sending process...');
 
     // Send admin email
-    console.log('Sending admin email...');
-    const adminEmailResponse = await emailjs.send(
+console.log('Sending admin email...');
+let adminEmailResponse;
+try {
+    adminEmailResponse = await emailjs.send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_ADMIN_TEMPLATE_ID,
         {...templateParams, to_name: 'Matt'}
-    ).catch(error => {
-        console.error('Admin email failed:', error);
-        throw new Error('Failed to send admin notification');
-    });
+    );
+    console.log('Admin email sent:', adminEmailResponse.status);
+} catch (error) {
+    console.error('Admin email error:', error);
+    throw new Error('Failed to send admin notification');
+}
 
-    if (!adminEmailResponse || adminEmailResponse.status !== 200) {
-        throw new Error('Admin email sending failed');
-    }
-    console.log('Admin email sent successfully');
-
-    // Send customer email
-    console.log('Sending customer email...');
-    const customerEmailResponse = await emailjs.send(
+// Send customer email
+console.log('Sending customer email...');
+let customerEmailResponse;
+try {
+    customerEmailResponse = await emailjs.send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID,
         templateParams
-    ).catch(error => {
-        console.error('Customer email failed:', error);
-        throw new Error('Failed to send customer confirmation');
-    });
+    );
+    console.log('Customer email sent:', customerEmailResponse.status);
+} catch (error) {
+    console.error('Customer email error:', error);
+    throw new Error('Failed to send customer confirmation');
+}
 
     if (!customerEmailResponse || customerEmailResponse.status !== 200) {
         throw new Error('Customer email sending failed');
