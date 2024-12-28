@@ -111,8 +111,19 @@ h2 {
 #modal-images p {
     text-align: center;
     font-size: 0.875rem; 
-    color: #4b5563; /* Updated to dark gray */
+    color: #4b5563; /* Dark gray for labels */
     margin-top: 0.5rem; 
+}
+
+/* Form Styles */
+.form-control input {
+    @apply border border-gray-300 rounded-[15px] w-full p-2;
+    color: #4b5563; /* Dark gray text */
+    background-color: #fff; /* Ensure clear background */
+}
+
+.form-control input::placeholder {
+    color: #9ca3af; /* Light gray for placeholder text */
 }
 
 /* Buttons inside Modal */
