@@ -30,6 +30,7 @@
     "vite-plugin-static-copy": "^2.2.0"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "daisyui": "^4.12.22",
     "emailjs-com": "^3.2.0"
   }

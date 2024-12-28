@@ -4,6 +4,15 @@ const apiUrl = 'https://script.google.com/macros/s/AKfycbxJlyW8nblHwZu-T7wIqxrVv
 // Global pottery data
 let potteryData = [];
 
+import emailjs from '@emailjs/browser';
+
+// Initialize EmailJS at the start
+emailjs.init({
+    publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+});
+
+// Rest of your code...
+
 // Initialize application
 document.addEventListener('DOMContentLoaded', async () => {
   try {
