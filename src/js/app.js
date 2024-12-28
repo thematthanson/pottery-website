@@ -196,13 +196,15 @@ document.getElementById('order-form').addEventListener('submit', async function(
 
     // Prepare template params
     const templateParams = {
-      to_email: formData.get('user_email'),
-      to_name: formData.get('user_name'),
-      shipping_address: formData.get('user_address'),
-      pottery_id: potteryId,
-      pottery_description: pottery[5] || 'No description available',
-      pottery_dimensions: `${pottery[2] || 0} x ${pottery[3] || 0} x ${pottery[4] || 0}`
+        // Shared variables used in both templates
+        to_name: 'Matt', // For admin template
+        user_name: formData.get('user_name'),
+        user_email: formData.get('user_email'),
+        user_address: formData.get('user_address'),
+        pottery_id: potteryId,
+        pottery_details: pottery[5] || 'No description available'
     };
+    
     console.log('Email template params:', templateParams);
 
     // Send email to customer
