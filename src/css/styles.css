@@ -22,11 +22,13 @@ body {
     background-color: white; /* Optional: Background for contrast */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden; /* Ensures no overflow of content */
+    height: 150px; /* Default banner height */
 }
 
 .banner-container img {
     width: 100%; /* Full-width scaling */
-    height: auto; /* Maintains aspect ratio */
+    height: 100%; /* Ensure it fits the container */
+    object-fit: cover; /* Prevent vertical stretching */
     border-radius: 15px; /* Rounded corners for consistency */
 }
 
@@ -53,24 +55,24 @@ body {
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .banner-container {
-        height: 250px; /* Double the height for mobile */
+        height: 125px; /* Adjusted banner height for mobile */
     }
 
     .banner-container img {
-        height: 250px; /* Adjust image height */
+        height: 125px; /* Match image height */
     }
 
     .banner-overlay h1 {
-        @apply text-white text-lg md:text-2xl font-bold; /* Smaller text for mobile */
-        padding: 1rem; /* Extra padding for readability */
+        @apply text-white text-lg font-bold; /* Smaller text for mobile */
+        padding: 0.5rem; /* Padding for better visibility */
     }
 }
 
 /* Main Content Container */
 .container {
-    padding-top: 250px; /* Space for the banner */
-    padding-bottom: 50px; /* Extra bottom padding */
-    text-align: center; /* Center align text */
+    padding-top: calc(var(--banner-height, 150px) + 25px); /* Dynamic top padding based on banner height */
+    padding-bottom: 25px; /* Match the bottom spacing with cards */
+    text-align: center; /* Center-align the text */
 }
 
 h2 {
