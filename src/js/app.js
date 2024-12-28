@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             throw new Error('Google Sheets API Key or Spreadsheet ID is not defined.');
         }
 
-        const range = 'Pots!H2:Q'; // Adjust to Google Sheets layout
+        const range = 'Pots!H2:Q';
         potteryData = await fetchPotteryData(apiKey, spreadsheetId, range);
         console.log('Fetched pottery data:', potteryData);
 
@@ -138,16 +138,20 @@ function closeModal() {
 
 // Handle form submission
 document.getElementById('order-form').addEventListener('submit', async function (e) {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
 
     const potteryId = new FormData(this).get('pottery_id');
-    console.log(`Order submitted for pottery ID: ${potteryId}`);
+    try {
+        // Simulate order handling
+        console.log(`Order submitted for pottery ID: ${potteryId}`);
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // Simulate order handling or make your API call here
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated delay
-
-    alert(`Thank you for ordering Piece ${potteryId}!`);
-    closeModal(); // Close modal after submission
+        alert(`Thank you for ordering Piece ${potteryId}!`);
+        closeModal(); // Close modal after submission
+    } catch (error) {
+        console.error('Error during order submission:', error);
+        alert('Failed to submit the order. Please try again.');
+    }
 });
 
 // Make modal functions globally accessible
