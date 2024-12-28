@@ -10,8 +10,8 @@
 
     <!-- EmailJS -->
     <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script type="module" crossorigin src="/pottery-website/assets/main-5HhM2CLU.js"></script>
-  <link rel="stylesheet" crossorigin href="/pottery-website/assets/main-D0KqbQaz.css">
+  <script type="module" crossorigin src="/pottery-website/assets/main-C_4VGzr5.js"></script>
+  <link rel="stylesheet" crossorigin href="/pottery-website/assets/main-CNAR92_Q.css">
 </head>
 <body class="min-h-screen bg-gray-100">
     <!-- Banner Section -->
@@ -35,57 +35,51 @@
     <!-- Modal Dialog -->
     <dialog id="pottery-modal" class="modal">
         <div class="modal-box">
-            <h3 class="font-bold text-lg mb-4">Order Pottery</h3>
-
+            <h3 class="font-bold text-lg text-gray-700 mb-4">Order Pottery</h3>
+    
             <!-- Modal Images -->
-            <div id="modal-images" class="flex justify-center gap-4 mb-4"></div>
-
+            <div id="modal-images" class="flex justify-center gap-4 mb-4">
+                <div class="flex flex-col items-center">
+                    <img id="side-view-image" class="w-1/2 h-48 object-cover rounded-[15px]" alt="Side view">
+                    <small class="text-gray-600 mt-2">Side view</small>
+                </div>
+                <div class="flex flex-col items-center">
+                    <img id="top-view-image" class="w-1/2 h-48 object-cover rounded-[15px]" alt="Top view">
+                    <small class="text-gray-600 mt-2">Top view</small>
+                </div>
+            </div>
+    
             <form id="order-form" class="space-y-4">
                 <input type="hidden" name="pottery_id" id="pottery_id">
-
+    
                 <!-- Name Field -->
                 <div class="form-control w-full">
                     <label class="label">
                         <span class="label-text">Name</span>
                     </label>
-                    <input type="text" 
-                           id="name" 
-                           name="user_name" 
-                           required 
-                           class="input input-bordered w-full">
+                    <input type="text" id="name" name="user_name" required class="input input-bordered w-full">
                 </div>
-
+    
                 <!-- Email Field -->
                 <div class="form-control w-full">
                     <label class="label">
                         <span class="label-text">Email</span>
                     </label>
-                    <input type="email" 
-                           id="email" 
-                           name="user_email" 
-                           required 
-                           class="input input-bordered w-full">
+                    <input type="email" id="email" name="user_email" required class="input input-bordered w-full">
                 </div>
-
+    
                 <!-- Address Field -->
                 <div class="form-control w-full">
                     <label class="label">
                         <span class="label-text">Address</span>
                     </label>
-                    <input type="text" 
-                           id="address" 
-                           name="user_address" 
-                           required 
-                           class="input input-bordered w-full">
+                    <input type="text" id="address" name="user_address" required class="input input-bordered w-full">
                 </div>
-
+    
                 <!-- Form Actions -->
                 <div class="modal-action">
-                    <button type="button" 
-                            class="btn btn-secondary"
-                            onclick="closeModal()">Cancel</button>
-                    <button type="submit" 
-                            class="btn btn-primary">Submit Order</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Order</button>
                 </div>
             </form>
         </div>

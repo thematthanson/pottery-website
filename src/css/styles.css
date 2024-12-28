@@ -90,6 +90,16 @@ h2 {
     width: 90%;
 }
 
+.modal-box h3 {
+    color: #4b5563; /* Tailwind's gray-700 for "Order Pottery" text */
+}
+
+#modal-images small {
+    font-size: 0.875rem; /* Tailwind's text-sm */
+    color: #6b7280; /* Tailwind's gray-600 */
+    margin-top: 0.5rem;
+}
+
 .modal-action button {
     @apply rounded-[15px] px-4 py-2;
 }

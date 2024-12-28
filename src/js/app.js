@@ -177,7 +177,25 @@ document.getElementById('order-form').addEventListener('submit', async function 
         await updateGoogleSheet(potteryId);
         console.log('Sheet updated successfully');
 
+        const adminEmailResult = await emailjs.sendForm(
+            import.meta.env.VITE_EMAILJS_SERVICE_ID,
+            import.meta.env.VITE_EMAILJS_ADMIN_TEMPLATE_ID,
+            this,
+            import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        );
+        console.log('Admin email sent successfully:', adminEmailResult);
+
+        const customerEmailResult = await emailjs.sendForm(
+            import.meta.env.VITE_EMAILJS_SERVICE_ID,
+            import.meta.env.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID,
+            this,
+            import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        );
+        console.log('Customer email sent successfully:', customerEmailResult);
+
+        await markPotAsTaken(potteryId);
         alert('Order submitted successfully! Please check your email for confirmation.');
+        closeModal(); // Automatically close the modal after order completion
     } catch (error) {
         console.error('Error processing order:', error);
         alert(`Failed to submit order: ${error.message}`);
