@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             throw new Error('Google Sheets API Key or Spreadsheet ID is not defined.');
         }
 
-        const range = 'Pots!H2:Q'; // Matches Google Sheets layout
+        const range = 'Pots!H2:Q'; // Adjust to Google Sheets layout
         potteryData = await fetchPotteryData(apiKey, spreadsheetId, range);
         console.log('Fetched pottery data:', potteryData);
 
@@ -117,11 +117,11 @@ function openModal(potteryId) {
     if (imageContainer) {
         imageContainer.innerHTML = `
             <div class="flex flex-col items-center">
-                <img src="${imageUrl}" alt="Side view" class="modal-image">
+                <img src="${imageUrl}" alt="Side view" class="modal-image rounded-[15px]">
                 <p class="text-sm text-gray-600 mt-2">Side view</p>
             </div>
             <div class="flex flex-col items-center">
-                <img src="${topImageUrl}" alt="Top view" class="modal-image">
+                <img src="${topImageUrl}" alt="Top view" class="modal-image rounded-[15px]">
                 <p class="text-sm text-gray-600 mt-2">Top view</p>
             </div>
         `;
@@ -138,13 +138,18 @@ function closeModal() {
 
 // Handle form submission
 document.getElementById('order-form').addEventListener('submit', async function (e) {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
 
     const potteryId = new FormData(this).get('pottery_id');
     console.log(`Order submitted for pottery ID: ${potteryId}`);
-    closeModal(); // Close modal immediately after submission
+
+    // Simulate order handling or make your API call here
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated delay
+
+    alert(`Thank you for ordering Piece ${potteryId}!`);
+    closeModal(); // Close modal after submission
 });
 
-// Make functions globally accessible
+// Make modal functions globally accessible
 window.openModal = openModal;
 window.closeModal = closeModal;
