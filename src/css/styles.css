@@ -10,12 +10,13 @@
     width: 100%;
     z-index: 50;
     overflow: hidden; /* Ensures no overflow of content */
+    background: none; /* Removes any potential background causing the black stripe */
 }
 
 .banner-container img {
     width: 100%; /* Full-width scaling */
     height: auto; /* Maintains aspect ratio */
-    filter: brightness(80%); /* Slightly dims the image for text contrast */
+    filter: brightness(90%); /* Slightly dims the image for text contrast */
 }
 
 /* Banner Overlay */
@@ -28,12 +29,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+    background: rgba(0, 0, 0, 0.25); /* Reduced opacity for better visibility */
 }
 
 .banner-overlay h1 {
     color: #ffffff; /* White text for contrast */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Text shadow for better visibility */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6); /* Subtle shadow for improved legibility */
     font-size: 2rem; /* Adjusted size for readability */
     font-weight: bold; /* Bold text for prominence */
     padding: 10px 20px; /* Padding for spacing around text */
