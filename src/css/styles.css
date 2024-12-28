@@ -141,6 +141,7 @@ h2 {
 
 /* Card Styles */
 .card {
+    background-color: #FFFBF5;
     @apply bg-white rounded-[15px] shadow-lg overflow-hidden;
     margin: 0; 
 }
