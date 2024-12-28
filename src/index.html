@@ -85,7 +85,12 @@
                 <!-- Form Actions -->
                 <div class="modal-action flex justify-between mt-4">
                     <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Submit Order</button>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="normal-text">Submit Order</span>
+                        <span class="loading-text hidden">
+                            Processing... <span class="loading loading-spinner loading-sm"></span>
+                        </span>
+                    </button>
                 </div>
             </form>
         </div>

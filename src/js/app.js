@@ -178,30 +178,25 @@ function markPotteryAsTaken(potteryId) {
 
 // Handle form submission
 document.getElementById('order-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  const form = this;
-  const submitButton = form.querySelector('button[type="submit"]');
-  const formData = new FormData(form);
-  const potteryId = formData.get('pottery_id');
+    const form = this;
+    const submitButton = form.querySelector('button[type="submit"]');
+    const normalText = submitButton.querySelector('.normal-text');
+    const loadingText = submitButton.querySelector('.loading-text');
+    const formData = new FormData(form);
+    const potteryId = formData.get('pottery_id');
 
-  try {
-    // Disable submit button while processing
-    if (submitButton) submitButton.disabled = true;
+    try {
+        // Update UI to loading state
+        submitButton.disabled = true;
+        submitButton.classList.add('opacity-50');
+        normalText.classList.add('hidden');
+        loadingText.classList.remove('hidden');
 
-    // Find pottery details
-    const pottery = potteryData.find(item => item[0] === potteryId);
-    if (!pottery) throw new Error('Pottery not found');
-
-    const templateParams = {
-        // Shared variables used in both templates
-        to_name: formData.get('user_name'),
-        user_name: formData.get('user_name'),
-        user_email: formData.get('user_email'),
-        user_address: formData.get('user_address'),
-        pottery_id: potteryId,
-        pottery_details: pottery[5] || 'No description available'
-    };
+        // Find pottery details
+        const pottery = potteryData.find(item => item[0] === potteryId);
+        if (!pottery) throw new Error('Pottery not found');
     
     console.log('Starting email sending process...');
 
@@ -254,14 +249,18 @@ try {
     
     // Close modal
     closeModal();
-  } catch (error) {
+} catch (error) {
     console.error('Order submission error:', error);
     alert(`Failed to submit the order: ${error.message}`);
-  } finally {
-    // Re-enable submit button
-    if (submitButton) submitButton.disabled = false;
-  }
+} finally {
+    // Reset UI state
+    submitButton.disabled = false;
+    submitButton.classList.remove('opacity-50');
+    normalText.classList.remove('hidden');
+    loadingText.classList.add('hidden');
+}
 });
+    
 
 // Make modal functions globally accessible
 window.openModal = openModal;
