@@ -61,7 +61,7 @@ function renderPotteryItems(potteryData) {
     const isTaken = status?.toLowerCase() === 'taken';
 
     const card = document.createElement('div');
-    card.className = `card ${isTaken ? 'taken' : ''}`; 
+    card.className = `card ${isTaken ? 'taken' : ''} bg-[#FFFBF5]`;
 
     card.innerHTML = `
       <figure>
@@ -150,8 +150,6 @@ async function updateGoogleSheet(potteryId) {
       body: JSON.stringify({ potteryId }),
     });
 
-    // Since we're using no-cors mode, we can't read the response
-    // Instead, we'll return a success status if we get here
     return { success: true };
   } catch (error) {
     console.error('Error updating Google Sheets:', error);
@@ -163,8 +161,8 @@ async function updateGoogleSheet(potteryId) {
 function markPotteryAsTaken(potteryId) {
   const potteryIndex = potteryData.findIndex(item => item[0] === potteryId);
   if (potteryIndex !== -1) {
-    potteryData[potteryIndex][6] = 'taken'; // Update status locally
-    renderPotteryItems(potteryData); // Re-render cards
+    potteryData[potteryIndex][6] = 'taken';
+    renderPotteryItems(potteryData);
   } else {
     console.error('Pottery ID not found in local data');
   }
@@ -172,67 +170,80 @@ function markPotteryAsTaken(potteryId) {
 
 // Handle form submission
 document.getElementById('order-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-  
-    const form = this;
-    const submitButton = form.querySelector('button[type="submit"]');
-    const formData = new FormData(form);
-    const potteryId = formData.get('pottery_id');
-  
-    try {
-        // Disable submit button while processing
-        if (submitButton) submitButton.disabled = true;
-    
-        // Find pottery details
-        const pottery = potteryData.find(item => item[0] === potteryId);
-        if (!pottery) throw new Error('Pottery not found');
-    
-        // Log the template params for debugging
-        const templateParams = {
-          to_email: formData.get('user_email'),
-          to_name: formData.get('user_name'),
-          shipping_address: formData.get('user_address'),
-          pottery_id: potteryId,
-          pottery_description: pottery[5] || 'No description available',
-          pottery_dimensions: `${pottery[2] || 0} x ${pottery[3] || 0} x ${pottery[4] || 0}`
-        };
-        console.log('Email template params:', templateParams);
-    
-        // Add more detailed error handling for EmailJS
-        const emailResponse = await emailjs.send(
-          import.meta.env.VITE_EMAILJS_SERVICE_ID,
-          import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-          templateParams
-        ).catch(error => {
-          console.error('EmailJS detailed error:', error);
-          throw error;
-        });
-    
-        console.log('Email response:', emailResponse);
-  
-      if (emailResponse.status !== 200) {
-        throw new Error('Failed to send email');
-      }
-  
-      // Update Google Sheet
-      await updateGoogleSheet(potteryId);
-  
-      // Update local state and UI
-      markPotteryAsTaken(potteryId);
-      
-      // Show success message
-      alert(`Thank you for ordering Piece ${potteryId}! A confirmation email has been sent to ${formData.get('user_email')}`);
-      
-      // Close modal
-      closeModal();
-    } catch (error) {
-      console.error('Error during order submission:', error);
-      alert('Failed to submit the order. Please try again.');
-    } finally {
-      // Re-enable submit button
-      if (submitButton) submitButton.disabled = false;
+  e.preventDefault();
+
+  const form = this;
+  const submitButton = form.querySelector('button[type="submit"]');
+  const formData = new FormData(form);
+  const potteryId = formData.get('pottery_id');
+
+  try {
+    // Disable submit button while processing
+    if (submitButton) submitButton.disabled = true;
+
+    // Find pottery details
+    const pottery = potteryData.find(item => item[0] === potteryId);
+    if (!pottery) throw new Error('Pottery not found');
+
+    // Prepare template params
+    const templateParams = {
+      to_email: formData.get('user_email'),
+      to_name: formData.get('user_name'),
+      shipping_address: formData.get('user_address'),
+      pottery_id: potteryId,
+      pottery_description: pottery[5] || 'No description available',
+      pottery_dimensions: `${pottery[2] || 0} x ${pottery[3] || 0} x ${pottery[4] || 0}`
+    };
+    console.log('Email template params:', templateParams);
+
+    // Send email to customer
+    const customerEmailResponse = await emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID,
+      templateParams
+    ).catch(error => {
+      console.error('Customer EmailJS error:', error);
+      throw error;
+    });
+
+    console.log('Customer email response:', customerEmailResponse);
+
+    // Send email to admin
+    const adminEmailResponse = await emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_ADMIN_TEMPLATE_ID,
+      templateParams
+    ).catch(error => {
+      console.error('Admin EmailJS error:', error);
+      throw error;
+    });
+
+    console.log('Admin email response:', adminEmailResponse);
+
+    // Check both responses
+    if (customerEmailResponse.status !== 200 || adminEmailResponse.status !== 200) {
+      throw new Error('Failed to send one or more emails');
     }
-  });
+
+    // Update Google Sheet
+    await updateGoogleSheet(potteryId);
+
+    // Update local state and UI
+    markPotteryAsTaken(potteryId);
+    
+    // Show success message
+    alert(`Thank you for ordering Piece ${potteryId}! A confirmation email has been sent to ${formData.get('user_email')}`);
+    
+    // Close modal
+    closeModal();
+  } catch (error) {
+    console.error('Error during order submission:', error);
+    alert('Failed to submit the order. Please try again.');
+  } finally {
+    // Re-enable submit button
+    if (submitButton) submitButton.disabled = false;
+  }
+});
 
 // Make modal functions globally accessible
 window.openModal = openModal;
