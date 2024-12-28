@@ -197,26 +197,26 @@ document.getElementById('order-form').addEventListener('submit', async function(
     console.log('Email template params:', templateParams);
 
     // Send email to customer
-    const customerEmailResponse = await emailjs.send(
-      import.meta.env.VITE_EMAILJS_SERVICE_ID,
-      import.meta.env.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID,
-      templateParams
-    ).catch(error => {
-      console.error('Customer EmailJS error:', error);
-      throw error;
-    });
+const customerEmailResponse = await emailjs.send(
+    import.meta.env.VITE_EMAILJS_SERVICE_ID,
+    import.meta.env.VITE_EMAILJS_CUSTOMER_TEMPLATE_ID,
+    templateParams,
+    import.meta.env.VITE_EMAILJS_PUBLIC_KEY  // Add public key here
+).catch(error => {
+    console.error('Customer EmailJS error:', error);
+    throw error;
+});
 
-    console.log('Customer email response:', customerEmailResponse);
-
-    // Send email to admin
-    const adminEmailResponse = await emailjs.send(
-      import.meta.env.VITE_EMAILJS_SERVICE_ID,
-      import.meta.env.VITE_EMAILJS_ADMIN_TEMPLATE_ID,
-      templateParams
-    ).catch(error => {
-      console.error('Admin EmailJS error:', error);
-      throw error;
-    });
+// Send email to admin
+const adminEmailResponse = await emailjs.send(
+    import.meta.env.VITE_EMAILJS_SERVICE_ID,
+    import.meta.env.VITE_EMAILJS_ADMIN_TEMPLATE_ID,
+    templateParams,
+    import.meta.env.VITE_EMAILJS_PUBLIC_KEY  // Add public key here
+).catch(error => {
+    console.error('Admin EmailJS error:', error);
+    throw error;
+});
 
     console.log('Admin email response:', adminEmailResponse);
 

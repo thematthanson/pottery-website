@@ -9,14 +9,16 @@
     <link href="./css/styles.css" rel="stylesheet">
     <link rel="icon" href="./assets/images/favicon.ico">
 
-    <!-- EmailJS -->
-    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-    <script type="module">
-        window.onload = function() {
-            emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
-            console.log('EmailJS initialized');
-        };
-    </script>
+   <!-- Replace your current EmailJS script with this -->
+<script type="text/javascript" src="https://cdn.emailjs.com/sdk/4.3.3/email.min.js"></script>
+<script type="module">
+    window.onload = function() {
+        emailjs.init({
+            publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        });
+        console.log('EmailJS initialized');
+    };
+</script>
 </head>
 <body class="min-h-screen bg-gray-100">
     <!-- Banner Section -->
