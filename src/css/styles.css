@@ -12,6 +12,15 @@ body {
     color: #f9f9f9;
 }
 
+/* Mobile-specific background adjustments */
+@media (max-width: 768px) {
+    body {
+        background-size: 200px; /* Or whatever size works best for your texture */
+        background-repeat: repeat;
+        background-attachment: scroll; /* Better performance on mobile */
+    }
+}
+
 /* Banner Container */
 .banner-container {
     position: fixed;
