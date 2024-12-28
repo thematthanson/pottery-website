@@ -59,28 +59,19 @@ function renderPotteryItems(potteryData) {
 
     potteryGrid.innerHTML = '';
 
-    potteryData.forEach(([id, imageUrl, length, width, height, description, status, price, gifUrl, topImageUrl], index) => {
-        if (!id || !imageUrl) {
-            console.warn('Skipping invalid pottery item:', { id, imageUrl });
-            return;
-        }
-
-        console.log(`Rendering item ${index + 1}:`, { id, imageUrl, gifUrl });
-
+    potteryData.forEach(([id, imageUrl, length, width, height, description, status, price, gifUrl, topImageUrl]) => {
         const isTaken = status?.toLowerCase() === 'taken';
 
         const card = document.createElement('div');
         card.className = `card ${isTaken ? 'taken' : ''}`;
-        card.style.width = 'fit-content'; // Dynamically adjusts card width to content
 
         card.innerHTML = `
-            <figure style="width: 100%;">
+            <figure>
                 <img 
                     src="${imageUrl}" 
                     alt="Pottery ${id}" 
-                    class="object-cover w-full h-48 rounded-[15px] ${isTaken ? 'grayscale' : ''}"
-                    ${isTaken ? `onmouseover="this.src='${import.meta.env.BASE_URL}assets/images/soldout.webp'"` : `onmouseover="this.src='${gifUrl}'"`}
-                    onmouseout="this.src='${imageUrl}'"
+                    class="w-full h-auto object-cover rounded-[15px] ${isTaken ? 'grayscale' : ''}"
+                    ${isTaken ? '' : `onmouseover="this.src='${gifUrl}'" onmouseout="this.src='${imageUrl}'"`}
                     onerror="this.onerror=null; this.src='${import.meta.env.BASE_URL}assets/images/fallback-image.jpg';">
             </figure>
             <div class="p-4">
@@ -89,7 +80,7 @@ function renderPotteryItems(potteryData) {
                 <p class="text-gray-600 mb-4">Size: ${length || 0} x ${width || 0} x ${height || 0}</p>
                 <button class="btn btn-primary w-full" 
                         ${isTaken ? 'disabled' : ''}
-                        onclick="window.openModal('${id}')">
+                        onclick="openModal('${id}')">
                     ${isTaken ? 'Taken' : 'Select'}
                 </button>
             </div>
