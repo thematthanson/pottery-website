@@ -126,15 +126,19 @@ function openModal(potteryId) {
   if (imageContainer) {
     imageContainer.innerHTML = `
       <div class="flex flex-col items-center">
-        <img src="${imageUrl}" alt="Side view" class="modal-image rounded-[15px]">
+        <div class="image-container">
+          <img src="${imageUrl}" alt="Side view" class="modal-image">
+        </div>
         <p class="text-sm text-gray-600 mt-2">Side view</p>
       </div>
       <div class="flex flex-col items-center">
-        <img src="${topImageUrl}" alt="Top view" class="modal-image rounded-[15px]">
+        <div class="image-container">
+          <img src="${topImageUrl}" alt="Top view" class="modal-image">
+        </div>
         <p class="text-sm text-gray-600 mt-2">Top view</p>
       </div>
     `;
-  }
+}
 
   modal.showModal();
 }

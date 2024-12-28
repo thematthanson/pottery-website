@@ -113,6 +113,14 @@ h2 {
     margin-bottom: 1rem;
 }
 
+#modal-images .image-container {
+    position: relative;
+    width: 12rem; /* w-48 equivalent */
+    height: 12rem; /* h-48 equivalent */
+    overflow: hidden;
+    @apply rounded-[15px];
+}
+
 #modal-images img {
     @apply w-48 h-48 object-cover rounded-[15px];
     transition: transform 0.3s ease;
@@ -122,7 +130,6 @@ h2 {
 
 #modal-images img:hover {
     transform: scale(2);
-    z-index: 50;
 }
 
 #modal-images p {
